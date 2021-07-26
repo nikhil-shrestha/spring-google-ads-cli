@@ -47,15 +47,9 @@ import java.util.List;
  */
 public class RunInventoryReport {
 
-  private static DashboardReportRepository dashboardRepository;
-
   @Autowired
-  DashboardReportRepository dashboardReportRepository;
+  private static DashboardReportRepository dashboardReportRepository;
 
-  @PostConstruct
-  public void init() {
-    this.dashboardRepository = dashboardReportRepository;
-  }
 
   private static class RunInventoryReportParams extends CodeSampleParams {
     @Parameter(
@@ -155,7 +149,7 @@ public class RunInventoryReport {
           dashboardReport.setAdRequest(obj.getAdRequest());
           dashboardReport.setResponses(obj.getServed());
           dashboardReport.setAdClicks(obj.getClicks());
-          dashboardRepository.save(dashboardReport);
+          dashboardReportRepository.save(dashboardReport);
         } catch (Exception e) {
           System.out.println("Error in data save");
           System.out.println("e = " + e);
@@ -168,7 +162,7 @@ public class RunInventoryReport {
     }
   }
 
-  public static void runDashboard(String[] args) {
+  public static void main(String[] args) {
     AdManagerSession session;
     try {
       // Generate a refreshable OAuth2 credential.
