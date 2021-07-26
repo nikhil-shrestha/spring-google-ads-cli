@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Entity
+@Entity(name = "Dashboard")
 @Table(name = "dashboard")
 public class DashboardReport implements Serializable {
   @Id
@@ -46,20 +46,34 @@ public class DashboardReport implements Serializable {
   private Double adClicks;
 
   public DashboardReport(
-    Date dimensionDate,
-    Double unfilledImpression,
-    Double impression,
-    Double revenue,
-    Double adRequest,
-    Double adClicks,
-    Double responses) {
-    this.adClicks = adClicks;
-    this.adRequest = adRequest;
-    this.revenue = revenue;
-    this.responses = responses;
-    this.dimensionDate = dimensionDate;
-    this.impression = impression;
-    this.unfilledImpression = unfilledImpression;
+    String dimensionDate,
+    String unfilledImpression,
+    String impression,
+    String revenue,
+    String adRequest,
+    String responses,
+    String adClicks) {
+    System.out.println(
+      dimensionDate + " " +
+        unfilledImpression + " " +
+        impression + " " +
+        revenue + " " +
+        adRequest + " " +
+        responses + " " +
+        adClicks
+    );
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    try {
+      this.dimensionDate = sdf.parse(dimensionDate);
+    } catch (Exception e) {
+      System.out.println("Error occurred " + e.getMessage());
+    }
+    this.unfilledImpression = Double.parseDouble(unfilledImpression);
+    this.impression = Double.parseDouble(impression);
+    this.revenue = Double.parseDouble(revenue);
+    this.adRequest = Double.parseDouble(adRequest);
+    this.responses = Double.parseDouble(responses);
+    this.adClicks = Double.parseDouble(adClicks);
   }
 
   public DashboardReport() {
@@ -80,7 +94,6 @@ public class DashboardReport implements Serializable {
   public void setDimensionDate(String dimensionDate) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     try {
-      // I recieve a string in this format here (refers to 5 march 2012).
       this.dimensionDate = sdf.parse(dimensionDate);
     } catch (Exception e) {
       System.out.println("Error occurred " + e.getMessage());

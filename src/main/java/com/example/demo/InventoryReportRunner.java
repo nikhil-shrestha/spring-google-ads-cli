@@ -31,6 +31,8 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -45,10 +47,11 @@ import java.util.List;
  * <p>Credentials and properties in {@code fromFile()} are pulled from the "ads.properties" file.
  * See README for more info.
  */
-public class RunInventoryReport {
+@Component
+public class InventoryReportRunner implements CommandLineRunner {
 
   @Autowired
-  private static DashboardReportRepository dashboardReportRepository;
+  private DashboardReportRepository dashboardReportRepository;
 
 
   private static class RunInventoryReportParams extends CodeSampleParams {
@@ -70,7 +73,7 @@ public class RunInventoryReport {
    * @throws InterruptedException if the thread was interrupted while waiting for the report to be
    *                              ready.
    */
-  public static void runExample(AdManagerServices adManagerServices, AdManagerSession session, long parentId)
+  public void runExample(AdManagerServices adManagerServices, AdManagerSession session, long parentId)
     throws IOException, InterruptedException {
     // Get the ReportService.
     ReportServiceInterface reportService =
@@ -162,7 +165,8 @@ public class RunInventoryReport {
     }
   }
 
-  public static void main(String[] args) {
+  @Override
+  public void run(String... args) {
     AdManagerSession session;
     try {
       // Generate a refreshable OAuth2 credential.
