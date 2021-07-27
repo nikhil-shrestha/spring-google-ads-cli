@@ -2,7 +2,7 @@ package com.example.demo;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-public class Dashboard1 {
+public class DashboardAll {
   @CsvBindByPosition(position = 0)
   private String date;
 

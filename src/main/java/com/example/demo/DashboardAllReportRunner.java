@@ -35,8 +35,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.io.*;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -50,7 +48,7 @@ import java.util.List;
  */
 @Component
 @Order(value = 1)
-public class InventoryReportRunner implements CommandLineRunner {
+public class DashboardAllReportRunner implements CommandLineRunner {
 
   @Autowired
   private DashboardReportRepository dashboardReportRepository;
@@ -137,13 +135,13 @@ public class InventoryReportRunner implements CommandLineRunner {
     System.out.println("done.");
     String fileName = file.toString();
     try {
-      List<Dashboard1> beans = new CsvToBeanBuilder(new FileReader(fileName))
-        .withType(Dashboard1.class)
+      List<DashboardAll> beans = new CsvToBeanBuilder(new FileReader(fileName))
+        .withType(DashboardAll.class)
         .withSkipLines(1)
         .build()
         .parse();
 
-      for (Dashboard1 obj : beans) {
+      for (DashboardAll obj : beans) {
         System.out.println(obj.toString());
         try {
           DashboardReport dashboardReport = new DashboardReport();
