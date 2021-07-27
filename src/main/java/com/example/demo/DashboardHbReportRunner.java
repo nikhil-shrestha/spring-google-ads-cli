@@ -1,10 +1,13 @@
+
 package com.example.demo;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 import com.beust.jcommander.Parameter;
-import com.example.demo.dao.entity.DashboardReport;
-import com.example.demo.dao.repository.DashboardReportRepository;
+import com.example.demo.dao.entity.DashboardAdxReport;
+import com.example.demo.dao.entity.DashboardHbReport;
+import com.example.demo.dao.repository.DashboardAdxReportRepository;
+import com.example.demo.dao.repository.DashboardHbReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
 import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
@@ -35,8 +38,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+
 import java.io.*;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -49,14 +51,14 @@ import java.util.List;
  * See README for more info.
  */
 @Component
-@Order(value = 1)
-public class InventoryReportRunner implements CommandLineRunner {
+@Order(value = 3)
+public class DashboardHbReportRunner implements CommandLineRunner {
 
   @Autowired
-  private DashboardReportRepository dashboardReportRepository;
+  private DashboardHbReportRepository dashboardHbReportRepository;
 
 
-  private static class RunInventoryReportParams extends CodeSampleParams {
+  private static class RunDashboardHbReportRunnerParams extends CodeSampleParams {
     @Parameter(
       names = ArgumentNames.PARENT_AD_UNIT_ID,
       required = true,
@@ -93,14 +95,16 @@ public class InventoryReportRunner implements CommandLineRunner {
     reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
     reportQuery.setColumns(
       new Column[]{
-        Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CLICKS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CPM_AND_CPC_REVENUE,
-        Column.TOTAL_AD_REQUESTS,
-        Column.TOTAL_RESPONSES_SERVED,
-        Column.TOTAL_FILL_RATE,
-        Column.AD_SERVER_CLICKS
+        Column.AD_EXCHANGE_IMPRESSIONS,
+        Column.AD_EXCHANGE_CLICKS,
+        Column.AD_EXCHANGE_CTR,
+        Column.AD_EXCHANGE_ESTIMATED_REVENUE,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_AVERAGE_ECPM,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_RESPONSES_SERVED,
+        Column.ADSENSE_RESPONSES_SERVED
       });
 
     // Set the filter statement.
@@ -137,24 +141,28 @@ public class InventoryReportRunner implements CommandLineRunner {
     System.out.println("done.");
     String fileName = file.toString();
     try {
-      List<Dashboard1> beans = new CsvToBeanBuilder(new FileReader(fileName))
-        .withType(Dashboard1.class)
+      List<DashboardHb> beans = new CsvToBeanBuilder(new FileReader(fileName))
+        .withType(DashboardHb.class)
         .withSkipLines(1)
         .build()
         .parse();
 
-      for (Dashboard1 obj : beans) {
+      for (DashboardHb obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardReport dashboardReport = new DashboardReport();
-          dashboardReport.setDimensionDate(obj.getDate());
-          dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
-          dashboardReport.setImpression(obj.getImpression());
-          dashboardReport.setRevenue(obj.getRevenue());
-          dashboardReport.setAdRequest(obj.getAdRequest());
-          dashboardReport.setResponses(obj.getServed());
-          dashboardReport.setAdClicks(obj.getClicks());
-          dashboardReportRepository.save(dashboardReport);
+          DashboardHbReport dashboardHbReport = new DashboardHbReport();
+          dashboardHbReport.setDimensionDate(obj.getDate());
+          dashboardHbReport.setImpression(obj.getImpression());
+          dashboardHbReport.setAverageECPM(obj.getAverageECPM());
+          dashboardHbReport.setClick(obj.getClick());
+          dashboardHbReport.setCtr(obj.getCtr());
+          dashboardHbReport.setRevenue(obj.getRevenue());
+          dashboardHbReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
+          dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
+          dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
+          dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
+          dashboardHbReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
+          dashboardHbReportRepository.save(dashboardHbReport);
         } catch (Exception e) {
           System.out.println("Error in data save");
           System.out.println("e = " + e);
@@ -174,7 +182,7 @@ public class InventoryReportRunner implements CommandLineRunner {
       // Generate a refreshable OAuth2 credential.
       Credential oAuth2Credential =
         new OfflineCredentials.Builder()
-          .forApi(Api.AD_MANAGER)
+          .forApi(OfflineCredentials.Api.AD_MANAGER)
           .fromFile()
           .build()
           .generateCredential();
@@ -201,7 +209,7 @@ public class InventoryReportRunner implements CommandLineRunner {
     }
 
     AdManagerServices adManagerServices = new AdManagerServices();
-    RunInventoryReportParams params = new RunInventoryReportParams();
+    DashboardHbReportRunner.RunDashboardHbReportRunnerParams params = new DashboardHbReportRunner.RunDashboardHbReportRunnerParams();
     if (!params.parseArguments(args)) {
       // Either pass the required parameters for this example on the command line, or insert them
       // into the code here. See the parameter class definition above for descriptions.
