@@ -149,6 +149,7 @@ public class DashboardHbReportRunner implements CommandLineRunner {
         System.out.println(obj.toString());
         try {
           DashboardHbReport dashboardHbReport = new DashboardHbReport();
+          dashboardHbReport.setParentId(parentId);
           dashboardHbReport.setDimensionDate(obj.getDate());
           dashboardHbReport.setImpression(obj.getImpression());
           dashboardHbReport.setAverageECPM(obj.getAverageECPM());

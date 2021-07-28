@@ -145,6 +145,7 @@ public class DashboardAllReportRunner implements CommandLineRunner {
         System.out.println(obj.toString());
         try {
           DashboardReport dashboardReport = new DashboardReport();
+          dashboardReport.setParentId(parentId);
           dashboardReport.setDimensionDate(obj.getDate());
           dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
           dashboardReport.setImpression(obj.getImpression());

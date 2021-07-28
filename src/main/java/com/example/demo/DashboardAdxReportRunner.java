@@ -148,11 +148,12 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
         System.out.println(obj.toString());
         try {
           DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
+          dashboardAdxReport.setParentId(parentId);
           dashboardAdxReport.setDimensionDate(obj.getDate());
-//          dashboardAdxReport.setImpression(obj.getImpression());
-//          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
-//          dashboardAdxReport.setClick(obj.getClick());
-//          dashboardAdxReport.setCtr(obj.getCtr());
+          dashboardAdxReport.setImpression(obj.getImpression());
+          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
+          dashboardAdxReport.setClick(obj.getClick());
+          dashboardAdxReport.setCtr(obj.getCtr());
           dashboardAdxReport.setRevenue(obj.getRevenue());
           dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
           dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());

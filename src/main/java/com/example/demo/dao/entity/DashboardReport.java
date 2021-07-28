@@ -24,6 +24,8 @@ public class DashboardReport implements Serializable {
   )
   private Long id;
 
+  private Long parentId;
+
   @Column(name = "dimension_date")
   private Date dimensionDate;
 
@@ -46,6 +48,7 @@ public class DashboardReport implements Serializable {
   private Double adClicks;
 
   public DashboardReport(
+    Long parentId,
     String dimensionDate,
     String unfilledImpression,
     String impression,
@@ -54,7 +57,8 @@ public class DashboardReport implements Serializable {
     String responses,
     String adClicks) {
     System.out.println(
-      dimensionDate + " " +
+      parentId + " " +
+        dimensionDate + " " +
         unfilledImpression + " " +
         impression + " " +
         revenue + " " +
@@ -62,6 +66,7 @@ public class DashboardReport implements Serializable {
         responses + " " +
         adClicks
     );
+    this.parentId = parentId;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     try {
       this.dimensionDate = sdf.parse(dimensionDate);
@@ -85,6 +90,14 @@ public class DashboardReport implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Long getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Long parentId) {
+    this.parentId = parentId;
   }
 
   public Date getDimensionDate() {
