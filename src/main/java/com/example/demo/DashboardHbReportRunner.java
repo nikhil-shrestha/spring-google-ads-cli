@@ -95,16 +95,14 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
     reportQuery.setColumns(
       new Column[]{
-        Column.AD_EXCHANGE_IMPRESSIONS,
-        Column.AD_EXCHANGE_CLICKS,
-        Column.AD_EXCHANGE_CTR,
-        Column.AD_EXCHANGE_ESTIMATED_REVENUE,
-        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_AVERAGE_ECPM,
-        Column.AD_EXCHANGE_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
-        Column.AD_EXCHANGE_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
-        Column.AD_EXCHANGE_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
-        Column.AD_EXCHANGE_RESPONSES_SERVED,
-        Column.ADSENSE_RESPONSES_SERVED
+        Column.AD_SERVER_IMPRESSIONS,
+        Column.AD_SERVER_CLICKS,
+        Column.AD_SERVER_CTR,
+        Column.AD_SERVER_WITHOUT_CPD_AVERAGE_ECPM,
+        Column.AD_SERVER_CPM_AND_CPC_REVENUE,
+        Column.AD_SERVER_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
+        Column.AD_SERVER_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
+        Column.AD_SERVER_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
       });
 
     // Set the filter statement.

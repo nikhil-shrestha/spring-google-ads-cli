@@ -234,7 +234,9 @@ public class DashboardHbReport implements Serializable {
 
   public void setAdExchangeResponseServed(String adExchangeResponseServed) {
     try {
-      this.adExchangeResponseServed = Double.parseDouble(adExchangeResponseServed);
+      if(adExchangeResponseServed != null){
+        this.adExchangeResponseServed = Double.parseDouble(adExchangeResponseServed);
+      }
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
@@ -246,7 +248,9 @@ public class DashboardHbReport implements Serializable {
 
   public void setProgrammaticResponsesServed(String programmaticResponsesServed) {
     try {
-      this.programmaticResponsesServed = Double.parseDouble(programmaticResponsesServed);
+      if(programmaticResponsesServed != null){
+        this.programmaticResponsesServed = Double.parseDouble(programmaticResponsesServed);
+      }
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }

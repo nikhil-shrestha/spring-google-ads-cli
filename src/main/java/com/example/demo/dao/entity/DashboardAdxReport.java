@@ -132,6 +132,7 @@ public class DashboardAdxReport implements Serializable {
 
   public void setImpression(String impression) {
     try {
+      System.out.println("impression = " + impression);
       this.impression = Double.parseDouble(impression);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());

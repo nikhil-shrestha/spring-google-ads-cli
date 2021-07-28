@@ -92,10 +92,10 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
     reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
     reportQuery.setColumns(
       new Column[]{
-        Column.AD_EXCHANGE_IMPRESSIONS,
-        Column.AD_EXCHANGE_CLICKS,
-        Column.AD_EXCHANGE_CTR,
-        Column.AD_EXCHANGE_ESTIMATED_REVENUE,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_IMPRESSIONS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CLICKS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CTR,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_REVENUE,
         Column.AD_EXCHANGE_LINE_ITEM_LEVEL_AVERAGE_ECPM,
         Column.AD_EXCHANGE_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
         Column.AD_EXCHANGE_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
@@ -149,10 +149,10 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
         try {
           DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
           dashboardAdxReport.setDimensionDate(obj.getDate());
-          dashboardAdxReport.setImpression(obj.getImpression());
-          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
-          dashboardAdxReport.setClick(obj.getClick());
-          dashboardAdxReport.setCtr(obj.getCtr());
+//          dashboardAdxReport.setImpression(obj.getImpression());
+//          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
+//          dashboardAdxReport.setClick(obj.getClick());
+//          dashboardAdxReport.setCtr(obj.getCtr());
           dashboardAdxReport.setRevenue(obj.getRevenue());
           dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
           dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());
