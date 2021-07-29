@@ -53,8 +53,8 @@ public class DashboardHbReport implements Serializable {
   @Column(name = "viewable_impressions")
   private Double viewableImpressions;
 
-  @Column(name = "ad_exchange_responses_served")
-  private Double adExchangeResponseServed;
+  @Column(name = "responses_served")
+  private Double responseServed;
 
   @Column(name = "programmatic_responses_served")
   private Double programmaticResponsesServed;
@@ -102,7 +102,7 @@ public class DashboardHbReport implements Serializable {
     this.eligibleImpressions = Double.parseDouble(eligibleImpressions);
     this.measurableImpressions = Double.parseDouble(measurableImpressions);
     this.viewableImpressions = Double.parseDouble(viewableImpressions);
-    this.adExchangeResponseServed = Double.parseDouble(adExchangeResponseServed);
+    this.responseServed = Double.parseDouble(adExchangeResponseServed);
     this.programmaticResponsesServed = Double.parseDouble(programmaticResponsesServed);
   }
 
@@ -243,13 +243,13 @@ public class DashboardHbReport implements Serializable {
 
 
   public Double getAdExchangeResponseServed() {
-    return adExchangeResponseServed;
+    return responseServed;
   }
 
   public void setAdExchangeResponseServed(String adExchangeResponseServed) {
     try {
       if(adExchangeResponseServed != null){
-        this.adExchangeResponseServed = Double.parseDouble(adExchangeResponseServed);
+        this.responseServed = Double.parseDouble(adExchangeResponseServed);
       }
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
@@ -284,7 +284,7 @@ public class DashboardHbReport implements Serializable {
       ", eligibleImpressions=" + eligibleImpressions +
       ", measurableImpressions=" + measurableImpressions +
       ", viewableImpressions=" + viewableImpressions +
-      ", adExchangeResponseServed=" + adExchangeResponseServed +
+      ", adExchangeResponseServed=" + responseServed +
       ", programmaticResponsesServed=" + programmaticResponsesServed +
       '}';
   }

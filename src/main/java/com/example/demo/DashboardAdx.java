@@ -33,7 +33,6 @@ public class DashboardAdx {
   @CsvBindByPosition(position = 9)
   private String adExchangeResponseServed;
 
-
   @CsvBindByPosition(position = 10)
   private String programmaticResponsesServed;
 

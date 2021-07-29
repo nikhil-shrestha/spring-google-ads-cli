@@ -114,9 +114,8 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("ORDER_ID IN :orderIds AND PARENT_AD_UNIT_ID = :id")
+        .where("ORDER_ID IN (" + orderIds + ") AND PARENT_AD_UNIT_ID = :id")
         .withBindVariableValue("id", parentId)
-        .withBindVariableValue("orderIds", orderIds)
         .removeLimitAndOffset();
 
     // Create report query.
@@ -137,17 +136,18 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     // Set the filter statement.
     reportQuery.setStatement(statementBuilder.toStatement());
 
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
-    String yesterdayDateString = dateFormat.format(yesterday());
-    String thirtyDaysDateString = dateFormat.format(thirtyDays());
 
     // Set the dynamic date range type or a custom start and end date.
 //    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
 
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String yesterdayDateString = dateFormat.format(yesterday());
+    String thirtyDaysDateString = dateFormat.format(thirtyDays());
+
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
-    reportQuery.setStartDate(DateTimes.toDateTime(yesterdayDateString, "America/New_York").getDate());
-    reportQuery.setEndDate(DateTimes.toDateTime(thirtyDaysDateString, "America/New_York").getDate());
+    reportQuery.setStartDate(DateTimes.toDateTime(yesterdayDateString+"T00:00:00", "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(thirtyDaysDateString+"T00:00:00", "America/New_York").getDate());
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -194,11 +194,9 @@ public class DashboardHbReportRunner implements CommandLineRunner {
           dashboardHbReport.setClick(obj.getClick());
           dashboardHbReport.setCtr(obj.getCtr());
           dashboardHbReport.setRevenue(obj.getRevenue());
-          dashboardHbReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
           dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
           dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
           dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
-          dashboardHbReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
           dashboardHbReportRepository.save(dashboardHbReport);
         } catch (Exception e) {
           System.out.println("Error in data save");

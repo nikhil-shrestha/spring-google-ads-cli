@@ -108,9 +108,8 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("ORDER_ID IN :orderIds AND PARENT_AD_UNIT_ID = :id")
+        .where("ORDER_ID IN (" + orderIds + ") AND PARENT_AD_UNIT_ID = :id")
         .withBindVariableValue("id", parentId)
-        .withBindVariableValue("orderIds", orderIds)
         .removeLimitAndOffset();
 
     // Create report query.
@@ -136,14 +135,14 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
     // Set the dynamic date range type or a custom start and end date.
 //    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
 
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String yesterdayDateString = dateFormat.format(yesterday());
     String thirtyDaysDateString = dateFormat.format(thirtyDays());
 
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
-    reportQuery.setStartDate(DateTimes.toDateTime(yesterdayDateString, "America/New_York").getDate());
-    reportQuery.setEndDate(DateTimes.toDateTime(thirtyDaysDateString, "America/New_York").getDate());
+    reportQuery.setStartDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
 
     // Create report job.
     ReportJob reportJob = new ReportJob();

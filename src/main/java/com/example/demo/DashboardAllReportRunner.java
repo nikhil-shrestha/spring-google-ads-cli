@@ -6,6 +6,7 @@ import com.beust.jcommander.Parameter;
 import com.example.demo.dao.entity.DashboardReport;
 import com.example.demo.dao.repository.DashboardReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
+import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
 import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
 import com.google.api.ads.admanager.axis.v202105.ApiError;
@@ -38,6 +39,10 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,6 +65,18 @@ public class DashboardAllReportRunner implements CommandLineRunner {
       required = true,
       description = "The ID of the order to run the report for.")
     private Long parentId;
+  }
+
+  private Date yesterday() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DATE, -1);
+    return cal.getTime();
+  }
+
+  private Date thirtyDays() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DAY_OF_MONTH, -30);
+    return cal.getTime();
   }
 
   /**
@@ -105,7 +122,17 @@ public class DashboardAllReportRunner implements CommandLineRunner {
     reportQuery.setStatement(statementBuilder.toStatement());
 
     // Set the dynamic date range type or a custom start and end date.
-    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+//    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String yesterdayDateString = dateFormat.format(yesterday());
+    String thirtyDaysDateString = dateFormat.format(thirtyDays());
+
+    // Set the start and end dates or choose a dynamic date range type.
+    reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
+    reportQuery.setStartDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
+
 
     // Create report job.
     ReportJob reportJob = new ReportJob();

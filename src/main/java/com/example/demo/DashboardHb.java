@@ -30,13 +30,6 @@ public class DashboardHb {
   @CsvBindByPosition(position = 8)
   private String viewableImpressions;
 
-  @CsvBindByPosition(position = 9)
-  private String adExchangeResponseServed;
-
-
-  @CsvBindByPosition(position = 10)
-  private String programmaticResponsesServed;
-
 
   public String getDate() {
     return date;
@@ -77,14 +70,6 @@ public class DashboardHb {
   }
 
 
-  public String getAdExchangeResponseServed() {
-    return adExchangeResponseServed;
-  }
-
-  public String getProgrammaticResponsesServed() {
-    return programmaticResponsesServed;
-  }
-
   @Override
   public String toString() {
     return "DashboardHb{" +
@@ -97,8 +82,6 @@ public class DashboardHb {
       ", eligibleImpressions='" + eligibleImpressions + '\'' +
       ", measurableImpressions='" + measurableImpressions + '\'' +
       ", viewableImpressions='" + viewableImpressions + '\'' +
-      ", adExchangeResponseServed='" + adExchangeResponseServed + '\'' +
-      ", programmaticResponsesServed='" + programmaticResponsesServed + '\'' +
       '}';
   }
 }
