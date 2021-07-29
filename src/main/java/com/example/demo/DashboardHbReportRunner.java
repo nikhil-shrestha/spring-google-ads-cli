@@ -146,8 +146,8 @@ public class DashboardHbReportRunner implements CommandLineRunner {
 
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
-    reportQuery.setStartDate(DateTimes.toDateTime(yesterdayDateString+"T00:00:00", "America/New_York").getDate());
-    reportQuery.setEndDate(DateTimes.toDateTime(thirtyDaysDateString+"T00:00:00", "America/New_York").getDate());
+    reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
