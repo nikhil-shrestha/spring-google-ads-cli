@@ -121,7 +121,7 @@ public class DashboardAllReportRunner implements CommandLineRunner {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("inventory-report-", ".csv");
+    File file = File.createTempFile("dashboard-all-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 

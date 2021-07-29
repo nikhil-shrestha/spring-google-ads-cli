@@ -6,6 +6,7 @@ import com.beust.jcommander.Parameter;
 import com.example.demo.dao.entity.DashboardAdxReport;
 import com.example.demo.dao.repository.DashboardAdxReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
+import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
 import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
 import com.google.api.ads.admanager.axis.v202105.ApiError;
@@ -39,6 +40,11 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,6 +69,18 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
     private Long parentId;
   }
 
+  private Date yesterday() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DATE, -1);
+    return cal.getTime();
+  }
+
+  private Date thirtyDays() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DAY_OF_MONTH, -30);
+    return cal.getTime();
+  }
+
   /**
    * Runs the example.
    *
@@ -80,11 +98,19 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
+    List<String> order = new ArrayList<>();
+    order.add("2678679591");
+    order.add("2715078140");
+    order.add("2766086578");
+    order.add("2809403236");
+    String orderIds = String.join(",", order);
+
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("PARENT_AD_UNIT_ID = :id")
+        .where("ORDER_ID IN :orderIds AND PARENT_AD_UNIT_ID = :id")
         .withBindVariableValue("id", parentId)
+        .withBindVariableValue("orderIds", orderIds)
         .removeLimitAndOffset();
 
     // Create report query.
@@ -108,7 +134,16 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
     reportQuery.setStatement(statementBuilder.toStatement());
 
     // Set the dynamic date range type or a custom start and end date.
-    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+//    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
+    String yesterdayDateString = dateFormat.format(yesterday());
+    String thirtyDaysDateString = dateFormat.format(thirtyDays());
+
+    // Set the start and end dates or choose a dynamic date range type.
+    reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
+    reportQuery.setStartDate(DateTimes.toDateTime(yesterdayDateString, "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(thirtyDaysDateString, "America/New_York").getDate());
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -124,7 +159,7 @@ public class DashboardAdxReportRunner implements CommandLineRunner {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("inventory-report-", ".csv");
+    File file = File.createTempFile("dashboard-adx-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 
