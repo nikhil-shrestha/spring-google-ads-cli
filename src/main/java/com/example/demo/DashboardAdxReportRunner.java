@@ -33,6 +33,7 @@ import com.google.common.io.Resources;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -53,6 +54,7 @@ import java.util.List;
  * <p>Credentials and properties in {@code fromFile()} are pulled from the "ads.properties" file.
  * See README for more info.
  */
+@Profile("!test")
 @Component
 @Order(value = 2)
 public class DashboardAdxReportRunner implements CommandLineRunner {

@@ -1,90 +1,44 @@
+package com.example.demo.service;
 
-package com.example.demo;
-
-import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
-
-import com.beust.jcommander.Parameter;
+import com.example.demo.DashboardAdx;
 import com.example.demo.dao.entity.DashboardAdxReport;
-import com.example.demo.dao.entity.DashboardHbReport;
 import com.example.demo.dao.repository.DashboardAdxReportRepository;
-import com.example.demo.dao.repository.DashboardHbReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
-import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
 import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
-import com.google.api.ads.admanager.axis.v202105.ApiError;
-import com.google.api.ads.admanager.axis.v202105.ApiException;
-import com.google.api.ads.admanager.axis.v202105.Column;
-import com.google.api.ads.admanager.axis.v202105.DateRangeType;
-import com.google.api.ads.admanager.axis.v202105.Dimension;
-import com.google.api.ads.admanager.axis.v202105.ExportFormat;
-import com.google.api.ads.admanager.axis.v202105.ReportDownloadOptions;
-import com.google.api.ads.admanager.axis.v202105.ReportJob;
-import com.google.api.ads.admanager.axis.v202105.ReportQuery;
-import com.google.api.ads.admanager.axis.v202105.ReportServiceInterface;
+import com.google.api.ads.admanager.axis.v202105.*;
 import com.google.api.ads.admanager.lib.client.AdManagerSession;
-import com.google.api.ads.admanager.lib.utils.examples.ArgumentNames;
 import com.google.api.ads.common.lib.auth.OfflineCredentials;
-import com.google.api.ads.common.lib.auth.OfflineCredentials.Api;
 import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
 import com.google.api.ads.common.lib.exception.OAuthException;
 import com.google.api.ads.common.lib.exception.ValidationException;
-import com.google.api.ads.common.lib.utils.examples.CodeSampleParams;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
-
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
-/**
- * This example runs a typical daily inventory report.
- *
- * <p>Credentials and properties in {@code fromFile()} are pulled from the "ads.properties" file.
- * See README for more info.
- */
-@Profile("!test")
-@Component
-@Order(value = 3)
-public class DashboardHbReportRunner implements CommandLineRunner {
+import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
+
+@Service
+public class DashboardAdxReportService {
+
+  private static final Logger logger = LoggerFactory.getLogger(DashboardAdxReportService.class);
 
   @Autowired
-  private DashboardHbReportRepository dashboardHbReportRepository;
-
-
-  private static class RunDashboardHbReportRunnerParams extends CodeSampleParams {
-    @Parameter(
-      names = ArgumentNames.PARENT_AD_UNIT_ID,
-      required = true,
-      description = "The ID of the order to run the report for.")
-    private Long parentId;
-  }
-
-  private Date yesterday() {
-    final Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DATE, -1);
-    return cal.getTime();
-  }
-
-  private Date thirtyDays() {
-    final Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DAY_OF_MONTH, -30);
-    return cal.getTime();
-  }
+  private DashboardAdxReportRepository dashboardAdxReportRepository;
 
   /**
    * Runs the example.
@@ -104,13 +58,10 @@ public class DashboardHbReportRunner implements CommandLineRunner {
       adManagerServices.get(session, ReportServiceInterface.class);
 
     List<String> order = new ArrayList<>();
-    order.add("2813565031");
-    order.add("2813507675");
-    order.add("2813458214");
-    order.add("2813646901");
-    order.add("2813487542");
-    order.add("2813643757");
-    order.add("2813643757");
+    order.add("2678679591");
+    order.add("2715078140");
+    order.add("2766086578");
+    order.add("2809403236");
     String orderIds = String.join(",", order);
 
     // Create statement
@@ -125,31 +76,23 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
     reportQuery.setColumns(
       new Column[]{
-        Column.AD_SERVER_IMPRESSIONS,
-        Column.AD_SERVER_CLICKS,
-        Column.AD_SERVER_CTR,
-        Column.AD_SERVER_WITHOUT_CPD_AVERAGE_ECPM,
-        Column.AD_SERVER_CPM_AND_CPC_REVENUE,
-        Column.AD_SERVER_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
-        Column.AD_SERVER_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
-        Column.AD_SERVER_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_IMPRESSIONS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CLICKS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CTR,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_REVENUE,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_AVERAGE_ECPM,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_RESPONSES_SERVED,
+        Column.ADSENSE_RESPONSES_SERVED
       });
 
     // Set the filter statement.
     reportQuery.setStatement(statementBuilder.toStatement());
 
-
     // Set the dynamic date range type or a custom start and end date.
-//    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
-
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    String yesterdayDateString = dateFormat.format(yesterday());
-    String thirtyDaysDateString = dateFormat.format(thirtyDays());
-
-    // Set the start and end dates or choose a dynamic date range type.
-    reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
-    reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
-    reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -165,7 +108,7 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-hb-report-", ".csv");
+    File file = File.createTempFile("dashboard-adx-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 
@@ -179,27 +122,29 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     System.out.println("done.");
     String fileName = file.toString();
     try {
-      List<DashboardHb> beans = new CsvToBeanBuilder(new FileReader(fileName))
-        .withType(DashboardHb.class)
+      List<DashboardAdx> beans = new CsvToBeanBuilder(new FileReader(fileName))
+        .withType(DashboardAdx.class)
         .withSkipLines(1)
         .build()
         .parse();
 
-      for (DashboardHb obj : beans) {
+      for (DashboardAdx obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardHbReport dashboardHbReport = new DashboardHbReport();
-          dashboardHbReport.setParentId(parentId);
-          dashboardHbReport.setDimensionDate(obj.getDate());
-          dashboardHbReport.setImpression(obj.getImpression());
-          dashboardHbReport.setAverageECPM(obj.getAverageECPM());
-          dashboardHbReport.setClick(obj.getClick());
-          dashboardHbReport.setCtr(obj.getCtr());
-          dashboardHbReport.setRevenue(obj.getRevenue());
-          dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
-          dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
-          dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
-          dashboardHbReportRepository.save(dashboardHbReport);
+          DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
+          dashboardAdxReport.setParentId(parentId);
+          dashboardAdxReport.setDimensionDate(obj.getDate());
+          dashboardAdxReport.setImpression(obj.getImpression());
+          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
+          dashboardAdxReport.setClick(obj.getClick());
+          dashboardAdxReport.setCtr(obj.getCtr());
+          dashboardAdxReport.setRevenue(obj.getRevenue());
+          dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
+          dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());
+          dashboardAdxReport.setMeasurableImpressions(obj.getMeasurableImpressions());
+          dashboardAdxReport.setViewableImpressions(obj.getViewableImpressions());
+          dashboardAdxReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
+          dashboardAdxReportRepository.save(dashboardAdxReport);
         } catch (Exception e) {
           System.out.println("Error in data save");
           System.out.println("e = " + e);
@@ -212,8 +157,9 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     }
   }
 
-  @Override
-  public void run(String... args) {
+  public void save(String pid) {
+    long start = System.currentTimeMillis();
+
     AdManagerSession session;
     try {
       // Generate a refreshable OAuth2 credential.
@@ -246,16 +192,11 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     }
 
     AdManagerServices adManagerServices = new AdManagerServices();
-    DashboardHbReportRunner.RunDashboardHbReportRunnerParams params = new DashboardHbReportRunner.RunDashboardHbReportRunnerParams();
-    if (!params.parseArguments(args)) {
-      // Either pass the required parameters for this example on the command line, or insert them
-      // into the code here. See the parameter class definition above for descriptions.
-      params.parentId = Long.parseLong("21875886579");
-    }
+    Long parentId = Long.parseLong(pid);
 
     try {
       try {
-        runExample(adManagerServices, session, params.parentId);
+        runExample(adManagerServices, session, parentId);
       } catch (ApiException apiException) {
         // ApiException is the base class for most exceptions thrown by an API request. Instances
         // of this exception have a message and a collection of ApiErrors that indicate the
@@ -299,5 +240,9 @@ public class DashboardHbReportRunner implements CommandLineRunner {
       System.err.printf(
         "Thread was interrupted while waiting for the report to be ready: %s.%n", ie);
     }
+    long end = System.currentTimeMillis();
+    logger.info("Total time {}", (end - start));
+    return;
   }
+
 }
