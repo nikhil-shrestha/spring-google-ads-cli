@@ -4,7 +4,9 @@ import com.example.demo.DashboardHb;
 import com.example.demo.dao.entity.DashboardAdxReport;
 import com.example.demo.dao.entity.DashboardHbReport;
 import com.example.demo.dao.repository.DashboardHbReportRepository;
+import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
+import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
 import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
 import com.google.api.ads.admanager.axis.v202105.*;
@@ -29,6 +31,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -94,7 +98,17 @@ public class DashboardHbReportService {
     reportQuery.setStatement(statementBuilder.toStatement());
 
     // Set the dynamic date range type or a custom start and end date.
-    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+//    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
+    String thirtyDaysDateString = dateFormat.format(CustomDate.thirtyDays());
+
+    // Set the start and end dates or choose a dynamic date range type.
+    reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
+    reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -133,25 +147,28 @@ public class DashboardHbReportService {
       for (DashboardHb obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardHbReport report = new DashboardHbReport();
-          report.setDimensionDate(obj.getDate());
-          Example<DashboardHbReport> example = Example.of(report);
-          Optional<DashboardHbReport> optional = dashboardHbReportRepository.findOne(example);
+//          DashboardHbReport report = new DashboardHbReport();
+//          report.setDimensionDate(obj.getDate());
+//          Example<DashboardHbReport> example = Example.of(report);
+//          Optional<DashboardHbReport> optional = dashboardHbReportRepository.findOne(example);
+//
+//          if(!optional.isPresent()) {
+//
+//          }
 
-          if(!optional.isPresent()) {
-            DashboardHbReport dashboardHbReport = new DashboardHbReport();
-            dashboardHbReport.setParentId(parentId);
-            dashboardHbReport.setDimensionDate(obj.getDate());
-            dashboardHbReport.setImpression(obj.getImpression());
-            dashboardHbReport.setAverageECPM(obj.getAverageECPM());
-            dashboardHbReport.setClick(obj.getClick());
-            dashboardHbReport.setCtr(obj.getCtr());
-            dashboardHbReport.setRevenue(obj.getRevenue());
-            dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
-            dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
-            dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
-            dashboardHbReportRepository.save(dashboardHbReport);
-          }
+          DashboardHbReport dashboardHbReport = new DashboardHbReport();
+          dashboardHbReport.setParentId(parentId);
+          dashboardHbReport.setDimensionDate(obj.getDate());
+          dashboardHbReport.setImpression(obj.getImpression());
+          dashboardHbReport.setAverageECPM(obj.getAverageECPM());
+          dashboardHbReport.setClick(obj.getClick());
+          dashboardHbReport.setCtr(obj.getCtr());
+          dashboardHbReport.setRevenue(obj.getRevenue());
+          dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
+          dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
+          dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
+          dashboardHbReportRepository.save(dashboardHbReport);
+
         } catch (Exception e) {
           System.out.println("Error in data save");
           System.out.println("e = " + e);

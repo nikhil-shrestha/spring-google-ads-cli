@@ -17,14 +17,11 @@ public class DashboardSchedule {
   private DashboardReportService allReportService;
 
 
-  @Scheduled(cron = "0 0 1 * * ?")
+  //  @Scheduled(cron = "0 0 1 * * ?")
+  @Scheduled(cron = "0 0/10 * * * ?")
   public void scheduleTask() throws Exception {
     String[] parentIds = new String[]{
-      "21875886579",
-      "21887933792",
-      "21876902145",
-      "21876718147",
-      "21915945038"
+      "21887933792"
     };
 
     for (String parentId : parentIds) {

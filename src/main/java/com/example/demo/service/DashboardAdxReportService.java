@@ -3,7 +3,9 @@ package com.example.demo.service;
 import com.example.demo.DashboardAdx;
 import com.example.demo.dao.entity.DashboardAdxReport;
 import com.example.demo.dao.repository.DashboardAdxReportRepository;
+import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
+import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
 import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
 import com.google.api.ads.admanager.axis.v202105.*;
@@ -28,6 +30,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -93,7 +97,15 @@ public class DashboardAdxReportService {
     reportQuery.setStatement(statementBuilder.toStatement());
 
     // Set the dynamic date range type or a custom start and end date.
-    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+//    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
+    String thirtyDaysDateString = dateFormat.format(CustomDate.thirtyDays());
+
+    // Set the start and end dates or choose a dynamic date range type.
+    reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
+    reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -132,27 +144,29 @@ public class DashboardAdxReportService {
       for (DashboardAdx obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardAdxReport report = new DashboardAdxReport();
-          report.setDimensionDate(obj.getDate());
-          Example<DashboardAdxReport> example = Example.of(report);
-          Optional<DashboardAdxReport> optional = dashboardAdxReportRepository.findOne(example);
+//          DashboardAdxReport report = new DashboardAdxReport();
+//          report.setDimensionDate(obj.getDate());
+//          Example<DashboardAdxReport> example = Example.of(report);
+//          Optional<DashboardAdxReport> optional = dashboardAdxReportRepository.findOne(example);
+//
+//          if(!optional.isPresent()) {
+//
+//          }
 
-          if(!optional.isPresent()) {
-            DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
-            dashboardAdxReport.setParentId(parentId);
-            dashboardAdxReport.setDimensionDate(obj.getDate());
-            dashboardAdxReport.setImpression(obj.getImpression());
-            dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
-            dashboardAdxReport.setClick(obj.getClick());
-            dashboardAdxReport.setCtr(obj.getCtr());
-            dashboardAdxReport.setRevenue(obj.getRevenue());
-            dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
-            dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());
-            dashboardAdxReport.setMeasurableImpressions(obj.getMeasurableImpressions());
-            dashboardAdxReport.setViewableImpressions(obj.getViewableImpressions());
-            dashboardAdxReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
-            dashboardAdxReportRepository.save(dashboardAdxReport);
-          }
+          DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
+          dashboardAdxReport.setParentId(parentId);
+          dashboardAdxReport.setDimensionDate(obj.getDate());
+          dashboardAdxReport.setImpression(obj.getImpression());
+          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
+          dashboardAdxReport.setClick(obj.getClick());
+          dashboardAdxReport.setCtr(obj.getCtr());
+          dashboardAdxReport.setRevenue(obj.getRevenue());
+          dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
+          dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());
+          dashboardAdxReport.setMeasurableImpressions(obj.getMeasurableImpressions());
+          dashboardAdxReport.setViewableImpressions(obj.getViewableImpressions());
+          dashboardAdxReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
+          dashboardAdxReportRepository.save(dashboardAdxReport);
           
         } catch (Exception e) {
           System.out.println("Error in data save");

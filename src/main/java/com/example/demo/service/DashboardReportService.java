@@ -4,7 +4,9 @@ import com.example.demo.DashboardAll;
 import com.example.demo.dao.entity.DashboardHbReport;
 import com.example.demo.dao.entity.DashboardReport;
 import com.example.demo.dao.repository.DashboardReportRepository;
+import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
+import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
 import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
 import com.google.api.ads.admanager.axis.v202105.*;
@@ -29,6 +31,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -84,7 +88,17 @@ public class DashboardReportService {
     reportQuery.setStatement(statementBuilder.toStatement());
 
     // Set the dynamic date range type or a custom start and end date.
-    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+//    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
+    String thirtyDaysDateString = dateFormat.format(CustomDate.thirtyDays());
+
+    // Set the start and end dates or choose a dynamic date range type.
+    reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
+    reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
+    reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -123,23 +137,25 @@ public class DashboardReportService {
       for (DashboardAll obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardReport report = new DashboardReport();
-          report.setDimensionDate(obj.getDate());
-          Example<DashboardReport> example = Example.of(report);
-          Optional<DashboardReport> optional = dashboardReportRepository.findOne(example);
+//          DashboardReport report = new DashboardReport();
+//          report.setDimensionDate(obj.getDate());
+//          Example<DashboardReport> example = Example.of(report);
+//          Optional<DashboardReport> optional = dashboardReportRepository.findOne(example);
+//
+//          if(!optional.isPresent()) {
+//
+//          }
 
-          if(!optional.isPresent()) {
-            DashboardReport dashboardReport = new DashboardReport();
-            dashboardReport.setParentId(parentId);
-            dashboardReport.setDimensionDate(obj.getDate());
-            dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
-            dashboardReport.setImpression(obj.getImpression());
-            dashboardReport.setRevenue(obj.getRevenue());
-            dashboardReport.setAdRequest(obj.getAdRequest());
-            dashboardReport.setResponses(obj.getServed());
-            dashboardReport.setAdClicks(obj.getClicks());
-            dashboardReportRepository.save(dashboardReport);
-          }
+          DashboardReport dashboardReport = new DashboardReport();
+          dashboardReport.setParentId(parentId);
+          dashboardReport.setDimensionDate(obj.getDate());
+          dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
+          dashboardReport.setImpression(obj.getImpression());
+          dashboardReport.setRevenue(obj.getRevenue());
+          dashboardReport.setAdRequest(obj.getAdRequest());
+          dashboardReport.setResponses(obj.getServed());
+          dashboardReport.setAdClicks(obj.getClicks());
+          dashboardReportRepository.save(dashboardReport);
 
         } catch (Exception e) {
           System.out.println("Error in data save");
