@@ -19,6 +19,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -131,20 +132,28 @@ public class DashboardAdxReportService {
       for (DashboardAdx obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
-          dashboardAdxReport.setParentId(parentId);
-          dashboardAdxReport.setDimensionDate(obj.getDate());
-          dashboardAdxReport.setImpression(obj.getImpression());
-          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
-          dashboardAdxReport.setClick(obj.getClick());
-          dashboardAdxReport.setCtr(obj.getCtr());
-          dashboardAdxReport.setRevenue(obj.getRevenue());
-          dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
-          dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());
-          dashboardAdxReport.setMeasurableImpressions(obj.getMeasurableImpressions());
-          dashboardAdxReport.setViewableImpressions(obj.getViewableImpressions());
-          dashboardAdxReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
-          dashboardAdxReportRepository.save(dashboardAdxReport);
+          DashboardAdxReport report = new DashboardAdxReport();
+          report.setDimensionDate(obj.getDate());
+          Example<DashboardAdxReport> example = Example.of(report);
+          Optional<DashboardAdxReport> optional = dashboardAdxReportRepository.findOne(example);
+
+          if(!optional.isPresent()) {
+            DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
+            dashboardAdxReport.setParentId(parentId);
+            dashboardAdxReport.setDimensionDate(obj.getDate());
+            dashboardAdxReport.setImpression(obj.getImpression());
+            dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
+            dashboardAdxReport.setClick(obj.getClick());
+            dashboardAdxReport.setCtr(obj.getCtr());
+            dashboardAdxReport.setRevenue(obj.getRevenue());
+            dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
+            dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());
+            dashboardAdxReport.setMeasurableImpressions(obj.getMeasurableImpressions());
+            dashboardAdxReport.setViewableImpressions(obj.getViewableImpressions());
+            dashboardAdxReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
+            dashboardAdxReportRepository.save(dashboardAdxReport);
+          }
+          
         } catch (Exception e) {
           System.out.println("Error in data save");
           System.out.println("e = " + e);

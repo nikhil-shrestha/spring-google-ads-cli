@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DashboardHb;
+import com.example.demo.dao.entity.DashboardAdxReport;
 import com.example.demo.dao.entity.DashboardHbReport;
 import com.example.demo.dao.repository.DashboardHbReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
@@ -19,6 +20,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -131,18 +133,25 @@ public class DashboardHbReportService {
       for (DashboardHb obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardHbReport dashboardHbReport = new DashboardHbReport();
-          dashboardHbReport.setParentId(parentId);
-          dashboardHbReport.setDimensionDate(obj.getDate());
-          dashboardHbReport.setImpression(obj.getImpression());
-          dashboardHbReport.setAverageECPM(obj.getAverageECPM());
-          dashboardHbReport.setClick(obj.getClick());
-          dashboardHbReport.setCtr(obj.getCtr());
-          dashboardHbReport.setRevenue(obj.getRevenue());
-          dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
-          dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
-          dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
-          dashboardHbReportRepository.save(dashboardHbReport);
+          DashboardHbReport report = new DashboardHbReport();
+          report.setDimensionDate(obj.getDate());
+          Example<DashboardHbReport> example = Example.of(report);
+          Optional<DashboardHbReport> optional = dashboardHbReportRepository.findOne(example);
+
+          if(!optional.isPresent()) {
+            DashboardHbReport dashboardHbReport = new DashboardHbReport();
+            dashboardHbReport.setParentId(parentId);
+            dashboardHbReport.setDimensionDate(obj.getDate());
+            dashboardHbReport.setImpression(obj.getImpression());
+            dashboardHbReport.setAverageECPM(obj.getAverageECPM());
+            dashboardHbReport.setClick(obj.getClick());
+            dashboardHbReport.setCtr(obj.getCtr());
+            dashboardHbReport.setRevenue(obj.getRevenue());
+            dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
+            dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
+            dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
+            dashboardHbReportRepository.save(dashboardHbReport);
+          }
         } catch (Exception e) {
           System.out.println("Error in data save");
           System.out.println("e = " + e);

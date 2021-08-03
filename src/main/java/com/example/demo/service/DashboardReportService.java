@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DashboardAll;
+import com.example.demo.dao.entity.DashboardHbReport;
 import com.example.demo.dao.entity.DashboardReport;
 import com.example.demo.dao.repository.DashboardReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
@@ -19,6 +20,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -121,16 +123,24 @@ public class DashboardReportService {
       for (DashboardAll obj : beans) {
         System.out.println(obj.toString());
         try {
-          DashboardReport dashboardReport = new DashboardReport();
-          dashboardReport.setParentId(parentId);
-          dashboardReport.setDimensionDate(obj.getDate());
-          dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
-          dashboardReport.setImpression(obj.getImpression());
-          dashboardReport.setRevenue(obj.getRevenue());
-          dashboardReport.setAdRequest(obj.getAdRequest());
-          dashboardReport.setResponses(obj.getServed());
-          dashboardReport.setAdClicks(obj.getClicks());
-          dashboardReportRepository.save(dashboardReport);
+          DashboardReport report = new DashboardReport();
+          report.setDimensionDate(obj.getDate());
+          Example<DashboardReport> example = Example.of(report);
+          Optional<DashboardReport> optional = dashboardReportRepository.findOne(example);
+
+          if(!optional.isPresent()) {
+            DashboardReport dashboardReport = new DashboardReport();
+            dashboardReport.setParentId(parentId);
+            dashboardReport.setDimensionDate(obj.getDate());
+            dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
+            dashboardReport.setImpression(obj.getImpression());
+            dashboardReport.setRevenue(obj.getRevenue());
+            dashboardReport.setAdRequest(obj.getAdRequest());
+            dashboardReport.setResponses(obj.getServed());
+            dashboardReport.setAdClicks(obj.getClicks());
+            dashboardReportRepository.save(dashboardReport);
+          }
+
         } catch (Exception e) {
           System.out.println("Error in data save");
           System.out.println("e = " + e);
