@@ -12,7 +12,13 @@ public class CustomDate {
 
   public static Date thirtyDays() {
     final Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DAY_OF_MONTH, -7);
+    cal.add(Calendar.DAY_OF_MONTH, -30);
+    return cal.getTime();
+  }
+
+  public static Date ninetyDays() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DAY_OF_MONTH, -90);
     return cal.getTime();
   }
 }

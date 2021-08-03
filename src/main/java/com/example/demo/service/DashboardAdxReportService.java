@@ -21,6 +21,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -31,6 +32,7 @@ import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
@@ -97,14 +99,17 @@ public class DashboardAdxReportService {
 //    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
-    String thirtyDaysDateString = dateFormat.format(CustomDate.thirtyDays());
+    String thirtyDaysDateString = dateFormat.format(CustomDate.ninetyDays());
 
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
 
+//    TODO: check default timezone (Google Adx TimeZone)
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
     reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
-    long id[] = {12597864};
+    long[] id = {
+      12597864
+    };
     reportQuery.setCustomDimensionKeyIds(id);
 
     // Create report job.
@@ -157,7 +162,7 @@ public class DashboardAdxReportService {
           dashboardAdxReport.setParentId(parentId);
           dashboardAdxReport.setDimensionDate(obj.getDate());
           dashboardAdxReport.setImpression(obj.getImpression());
-          dashboardAdxReport.setCustomTargetKey(obj.getCustomTargetKey());
+          dashboardAdxReport.setAdvertiserName(obj.getAdvertiserName());
           dashboardAdxReport.setDeviceName(obj.getDeviceName());
           dashboardAdxReport.setAdUnitId(obj.getAdUnitId());
           dashboardAdxReport.setAdUnitName(obj.getAdUnitName());
@@ -272,5 +277,4 @@ public class DashboardAdxReportService {
     logger.info("Total time {}", (end - start));
     return;
   }
-
 }

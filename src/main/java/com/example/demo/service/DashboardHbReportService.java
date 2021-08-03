@@ -21,6 +21,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -31,6 +32,7 @@ import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
@@ -98,13 +100,15 @@ public class DashboardHbReportService {
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
-    String thirtyDaysDateString = dateFormat.format(CustomDate.thirtyDays());
+    String thirtyDaysDateString = dateFormat.format(CustomDate.ninetyDays());
 
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
     reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
-    long id[] = {12597864};
+    long[] id = {
+      12597864
+    };
     reportQuery.setCustomDimensionKeyIds(id);
 
 
@@ -157,7 +161,7 @@ public class DashboardHbReportService {
           DashboardHbReport dashboardHbReport = new DashboardHbReport();
           dashboardHbReport.setParentId(parentId);
           dashboardHbReport.setDimensionDate(obj.getDate());
-          dashboardHbReport.setCustomTargetKey(obj.getCustomTargetKey());
+          dashboardHbReport.setAdvertiserName(obj.getAdvertiserName());
           dashboardHbReport.setDeviceName(obj.getDeviceName());
           dashboardHbReport.setAdUnitName(obj.getAdUnitName());
           dashboardHbReport.setAdUnitId(obj.getAdUnitId());

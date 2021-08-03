@@ -41,7 +41,6 @@ public class DashboardReport implements Serializable {
   @Column(name = "adUnit_id")
   private Long adUnitId;
 
-
   @Column(name = "unfilled_impression")
   private Double unfilledImpression;
 

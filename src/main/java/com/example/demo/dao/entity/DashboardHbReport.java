@@ -24,21 +24,22 @@ public class DashboardHbReport implements Serializable {
   )
   private Long id;
 
+  @Column(name = "parent_id")
   private Long parentId;
 
   @Column(name = "dimension_date")
   private Date dimensionDate;
 
-  @Column()
-  private String customTargetKey;
+  @Column(name = "advertiser_name")
+  private String advertiserName;
 
-  @Column()
+  @Column(name = "device_name")
   private String deviceName;
 
-  @Column()
+  @Column(name = "ad_unit_name")
   private String adUnitName;
 
-  @Column()
+  @Column(name = "ad_unit_id")
   private Long adUnitId;
 
   @Column()
@@ -53,7 +54,7 @@ public class DashboardHbReport implements Serializable {
   @Column()
   private Double revenue;
 
-  @Column(name = "average_eCPM")
+  @Column(name = "average_ecpm")
   private Double averageECPM;
 
   @Column(name = "eligible_impressions")
@@ -105,12 +106,12 @@ public class DashboardHbReport implements Serializable {
     }
   }
 
-  public String getCustomTargetKey() {
-    return customTargetKey;
+  public String getAdvertiserName() {
+    return advertiserName;
   }
 
-  public void setCustomTargetKey(String customTargetKey) {
-    this.customTargetKey = customTargetKey;
+  public void setAdvertiserName(String advertiserName) {
+    this.advertiserName = advertiserName;
   }
 
   public String getDeviceName() {
@@ -272,14 +273,13 @@ public class DashboardHbReport implements Serializable {
     }
   }
 
-
   @Override
   public String toString() {
     return "DashboardHbReport{" +
       "id=" + id +
       ", parentId=" + parentId +
       ", dimensionDate=" + dimensionDate +
-      ", customTargetKey='" + customTargetKey + '\'' +
+      ", advertiserName='" + advertiserName + '\'' +
       ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +

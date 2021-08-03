@@ -7,7 +7,7 @@ public class DashboardAdx {
   private String date;
 
   @CsvBindByPosition(position = 1)
-  private String customTargetKey;
+  private String advertiserName;
 
   @CsvBindByPosition(position = 2)
   private String deviceName;
@@ -52,8 +52,8 @@ public class DashboardAdx {
     return date;
   }
 
-  public String getCustomTargetKey() {
-    return customTargetKey;
+  public String getAdvertiserName() {
+    return advertiserName;
   }
 
   public String getDeviceName() {
@@ -112,10 +112,10 @@ public class DashboardAdx {
   public String toString() {
     return "DashboardAdx{" +
       "date='" + date + '\'' +
-      ", customTargetKey='" + customTargetKey + '\'' +
+      ", advertiserName='" + advertiserName + '\'' +
       ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
-      ", adUnitId=" + adUnitId +
+      ", adUnitId='" + adUnitId + '\'' +
       ", impression='" + impression + '\'' +
       ", click='" + click + '\'' +
       ", ctr='" + ctr + '\'' +

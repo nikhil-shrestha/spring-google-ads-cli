@@ -29,21 +29,20 @@ public class DashboardAdxReport implements Serializable {
   @Column(name = "dimension_date")
   private Date dimensionDate;
 
-  @Column()
-  private String customTargetKey;
+  @Column(name = "advertiser_name")
+  private String advertiserName;
 
-  @Column()
+  @Column(name = "device_name")
   private String deviceName;
 
-  @Column()
+  @Column(name = "ad_unit_name")
   private String adUnitName;
 
-  @Column()
+  @Column(name = "ad_unit_id")
   private Long adUnitId;
 
   @Column()
   private Double impression;
-
 
   @Column()
   private Double click;
@@ -106,13 +105,12 @@ public class DashboardAdxReport implements Serializable {
     }
   }
 
-
-  public String getCustomTargetKey() {
-    return customTargetKey;
+  public String getAdvertiserName() {
+    return advertiserName;
   }
 
-  public void setCustomTargetKey(String customTargetKey) {
-    this.customTargetKey = customTargetKey;
+  public void setAdvertiserName(String advertiserName) {
+    this.advertiserName = advertiserName;
   }
 
   public String getDeviceName() {
@@ -271,14 +269,13 @@ public class DashboardAdxReport implements Serializable {
     }
   }
 
-
   @Override
   public String toString() {
     return "DashboardAdxReport{" +
       "id=" + id +
       ", parentId=" + parentId +
       ", dimensionDate=" + dimensionDate +
-      ", customTargetKey='" + customTargetKey + '\'' +
+      ", advertiserName='" + advertiserName + '\'' +
       ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +

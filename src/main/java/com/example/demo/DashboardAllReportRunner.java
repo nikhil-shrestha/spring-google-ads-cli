@@ -6,6 +6,7 @@ import com.beust.jcommander.Parameter;
 import com.example.demo.csv.DashboardAll;
 import com.example.demo.dao.entity.DashboardReport;
 import com.example.demo.dao.repository.DashboardReportRepository;
+import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
 import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
 import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
@@ -70,18 +71,6 @@ public class DashboardAllReportRunner implements CommandLineRunner {
     private Long parentId;
   }
 
-  private Date yesterday() {
-    final Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DATE, -1);
-    return cal.getTime();
-  }
-
-  private Date thirtyDays() {
-    final Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DAY_OF_MONTH, -30);
-    return cal.getTime();
-  }
-
   /**
    * Runs the example.
    *
@@ -128,8 +117,8 @@ public class DashboardAllReportRunner implements CommandLineRunner {
 //    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    String yesterdayDateString = dateFormat.format(yesterday());
-    String thirtyDaysDateString = dateFormat.format(thirtyDays());
+    String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
+    String thirtyDaysDateString = dateFormat.format(CustomDate.thirtyDays());
 
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);

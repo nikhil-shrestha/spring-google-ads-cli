@@ -7,7 +7,7 @@ public class DashboardHb {
   private String date;
 
   @CsvBindByPosition(position = 1)
-  private String customTargetKey;
+  private String advertiserName;
 
   @CsvBindByPosition(position = 2)
   private String deviceName;
@@ -48,8 +48,8 @@ public class DashboardHb {
     return date;
   }
 
-  public String getCustomTargetKey() {
-    return customTargetKey;
+  public String getAdvertiserName() {
+    return advertiserName;
   }
 
   public String getDeviceName() {
@@ -100,15 +100,15 @@ public class DashboardHb {
   public String toString() {
     return "DashboardHb{" +
       "date='" + date + '\'' +
-      ", customTargetKey='" + customTargetKey + '\'' +
+      ", advertiserName='" + advertiserName + '\'' +
       ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId='" + adUnitId + '\'' +
       ", impression='" + impression + '\'' +
       ", click='" + click + '\'' +
       ", ctr='" + ctr + '\'' +
-      ", revenue='" + revenue + '\'' +
       ", averageECPM='" + averageECPM + '\'' +
+      ", revenue='" + revenue + '\'' +
       ", eligibleImpressions='" + eligibleImpressions + '\'' +
       ", measurableImpressions='" + measurableImpressions + '\'' +
       ", viewableImpressions='" + viewableImpressions + '\'' +

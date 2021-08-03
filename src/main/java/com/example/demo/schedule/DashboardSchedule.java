@@ -16,33 +16,34 @@ public class DashboardSchedule {
   @Autowired
   private DashboardReportService allReportService;
 
-
-  //  @Scheduled(cron = "0 0 1 * * ?")
-  @Scheduled(cron = "0/30 * * * * ?")
+  @Scheduled(cron = "0/10 0 * * * ?")
   public void scheduleTask() throws Exception {
-    String[] parentIds = new String[]{
-      "21887933792"
-//      "21915945038",
-//      "21876718147",
-//      "21876902145",
-//      "21875886579",
-//      "21897089670",
-//      "21887988623",
-//      "21887783590",
-//      "21876587060",
-//      "21876425862",
+    String[] parentIds = {
+      "21887933792",
+      "21915945038",
+      "21876718147",
+      "21876902145",
+      "21875886579",
+      "21897089670",
+      "21887988623",
+      "21887783590",
+      "21876587060",
+      "21876425862",
     };
 
     for (String parentId : parentIds) {
       allReportService.save(parentId);
+      Thread.sleep(5000);
     }
 
     for (String parentId : parentIds) {
       adxReportService.save(parentId);
+      Thread.sleep(5000);
     }
 
     for (String parentId : parentIds) {
       hbReportService.save(parentId);
+      Thread.sleep(5000);
     }
 
   }
