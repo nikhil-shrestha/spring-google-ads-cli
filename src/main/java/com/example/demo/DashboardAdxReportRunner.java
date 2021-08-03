@@ -3,6 +3,7 @@ package com.example.demo;
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 import com.beust.jcommander.Parameter;
+import com.example.demo.csv.DashboardAdx;
 import com.example.demo.dao.entity.DashboardAdxReport;
 import com.example.demo.dao.repository.DashboardAdxReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;

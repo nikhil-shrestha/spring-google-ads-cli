@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.DashboardAdx;
+import com.example.demo.csv.DashboardAdx;
 import com.example.demo.dao.entity.DashboardAdxReport;
 import com.example.demo.dao.repository.DashboardAdxReportRepository;
 import com.example.demo.utils.CustomDate;
@@ -21,8 +21,6 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -33,7 +31,6 @@ import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
@@ -78,7 +75,7 @@ public class DashboardAdxReportService {
 
     // Create report query.
     ReportQuery reportQuery = new ReportQuery();
-    reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
+    reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME});
     reportQuery.setColumns(
       new Column[]{
         Column.AD_EXCHANGE_LINE_ITEM_LEVEL_IMPRESSIONS,
@@ -104,8 +101,11 @@ public class DashboardAdxReportService {
 
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
+
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
     reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+    long id[] = {12597864};
+    reportQuery.setCustomDimensionKeyIds(id);
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -157,6 +157,11 @@ public class DashboardAdxReportService {
           dashboardAdxReport.setParentId(parentId);
           dashboardAdxReport.setDimensionDate(obj.getDate());
           dashboardAdxReport.setImpression(obj.getImpression());
+          dashboardAdxReport.setCustomTargetKey(obj.getCustomTargetKey());
+          dashboardAdxReport.setDeviceName(obj.getDeviceName());
+          dashboardAdxReport.setAdUnitId(obj.getAdUnitId());
+          dashboardAdxReport.setAdUnitName(obj.getAdUnitName());
+
           dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
           dashboardAdxReport.setClick(obj.getClick());
           dashboardAdxReport.setCtr(obj.getCtr());

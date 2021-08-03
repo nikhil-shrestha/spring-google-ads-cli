@@ -4,9 +4,8 @@ package com.example.demo;
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 import com.beust.jcommander.Parameter;
-import com.example.demo.dao.entity.DashboardAdxReport;
+import com.example.demo.csv.DashboardHb;
 import com.example.demo.dao.entity.DashboardHbReport;
-import com.example.demo.dao.repository.DashboardAdxReportRepository;
 import com.example.demo.dao.repository.DashboardHbReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
 import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
@@ -25,7 +24,6 @@ import com.google.api.ads.admanager.axis.v202105.ReportServiceInterface;
 import com.google.api.ads.admanager.lib.client.AdManagerSession;
 import com.google.api.ads.admanager.lib.utils.examples.ArgumentNames;
 import com.google.api.ads.common.lib.auth.OfflineCredentials;
-import com.google.api.ads.common.lib.auth.OfflineCredentials.Api;
 import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
 import com.google.api.ads.common.lib.exception.OAuthException;
 import com.google.api.ads.common.lib.exception.ValidationException;

@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.DashboardHb;
-import com.example.demo.dao.entity.DashboardAdxReport;
+import com.example.demo.csv.DashboardHb;
 import com.example.demo.dao.entity.DashboardHbReport;
 import com.example.demo.dao.repository.DashboardHbReportRepository;
 import com.example.demo.utils.CustomDate;
@@ -22,8 +21,6 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -34,7 +31,6 @@ import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
@@ -81,7 +77,7 @@ public class DashboardHbReportService {
 
     // Create report query.
     ReportQuery reportQuery = new ReportQuery();
-    reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
+    reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME});
     reportQuery.setColumns(
       new Column[]{
         Column.AD_SERVER_IMPRESSIONS,
@@ -108,6 +104,8 @@ public class DashboardHbReportService {
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
     reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+    long id[] = {12597864};
+    reportQuery.setCustomDimensionKeyIds(id);
 
 
     // Create report job.
@@ -159,6 +157,10 @@ public class DashboardHbReportService {
           DashboardHbReport dashboardHbReport = new DashboardHbReport();
           dashboardHbReport.setParentId(parentId);
           dashboardHbReport.setDimensionDate(obj.getDate());
+          dashboardHbReport.setCustomTargetKey(obj.getCustomTargetKey());
+          dashboardHbReport.setDeviceName(obj.getDeviceName());
+          dashboardHbReport.setAdUnitName(obj.getAdUnitName());
+          dashboardHbReport.setAdUnitId(obj.getAdUnitId());
           dashboardHbReport.setImpression(obj.getImpression());
           dashboardHbReport.setAverageECPM(obj.getAverageECPM());
           dashboardHbReport.setClick(obj.getClick());

@@ -29,57 +29,40 @@ public class DashboardReport implements Serializable {
   @Column(name = "dimension_date")
   private Date dimensionDate;
 
+  @Column(name = "advertiser_name")
+  private String advertiserName;
+
+  @Column(name = "device_name")
+  private String deviceName;
+
+  @Column(name = "adUnit_name")
+  private String adUnitName;
+
+  @Column(name = "adUnit_id")
+  private Long adUnitId;
+
+
   @Column(name = "unfilled_impression")
   private Double unfilledImpression;
 
   @Column()
   private Double impression;
 
-  @Column()
-  private Double revenue;
+  @Column(name = "line_item_clicks")
+  private Double lineItemClicks;
+
+  @Column(name = "cpm_revenue")
+  private Double cpmRevenue;
 
   @Column(name = "ad_request")
   private Double adRequest;
 
-  @Column()
-  private Double responses;
+  @Column(name = "response_served")
+  private Double responseServed;
 
-  @Column(name = "ad_clicks")
-  private Double adClicks;
+  @Column(name = "fill_rate")
+  private Double fillRate;
 
-  public DashboardReport(
-    Long parentId,
-    String dimensionDate,
-    String unfilledImpression,
-    String impression,
-    String revenue,
-    String adRequest,
-    String responses,
-    String adClicks) {
-    System.out.println(
-      parentId + " " +
-        dimensionDate + " " +
-        unfilledImpression + " " +
-        impression + " " +
-        revenue + " " +
-        adRequest + " " +
-        responses + " " +
-        adClicks
-    );
-    this.parentId = parentId;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    try {
-      this.dimensionDate = sdf.parse(dimensionDate);
-    } catch (Exception e) {
-      System.out.println("Error occurred " + e.getMessage());
-    }
-    this.unfilledImpression = Double.parseDouble(unfilledImpression);
-    this.impression = Double.parseDouble(impression);
-    this.revenue = Double.parseDouble(revenue);
-    this.adRequest = Double.parseDouble(adRequest);
-    this.responses = Double.parseDouble(responses);
-    this.adClicks = Double.parseDouble(adClicks);
-  }
 
   public DashboardReport() {
   }
@@ -92,6 +75,7 @@ public class DashboardReport implements Serializable {
     this.id = id;
   }
 
+
   public Long getParentId() {
     return parentId;
   }
@@ -99,6 +83,7 @@ public class DashboardReport implements Serializable {
   public void setParentId(Long parentId) {
     this.parentId = parentId;
   }
+
 
   public Date getDimensionDate() {
     return dimensionDate;
@@ -110,6 +95,42 @@ public class DashboardReport implements Serializable {
       this.dimensionDate = sdf.parse(dimensionDate);
     } catch (Exception e) {
       System.out.println("Error occurred " + e.getMessage());
+    }
+  }
+
+  public String getAdvertiserName() {
+    return advertiserName;
+  }
+
+  public void setAdvertiserName(String advertiserName) {
+    this.advertiserName = advertiserName;
+  }
+
+  public String getDeviceName() {
+    return deviceName;
+  }
+
+  public void setDeviceName(String deviceName) {
+    this.deviceName = deviceName;
+  }
+
+  public String getAdUnitName() {
+    return adUnitName;
+  }
+
+  public void setAdUnitName(String adUnitName) {
+    this.adUnitName = adUnitName;
+  }
+
+  public Long getAdUnitId() {
+    return adUnitId;
+  }
+
+  public void setAdUnitId(String adUnitId) {
+    try {
+      this.adUnitId = Long.parseLong(adUnitId);
+    } catch (NumberFormatException e) {
+      System.out.println(e.getMessage());
     }
   }
 
@@ -139,12 +160,12 @@ public class DashboardReport implements Serializable {
   }
 
   public Double getRevenue() {
-    return revenue;
+    return cpmRevenue;
   }
 
   public void setRevenue(String revenue) {
     try {
-      this.revenue = Double.parseDouble(revenue);
+      this.cpmRevenue = Double.parseDouble(revenue);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
@@ -164,24 +185,24 @@ public class DashboardReport implements Serializable {
   }
 
   public Double getResponses() {
-    return responses;
+    return responseServed;
   }
 
-  public void setResponses(String responses) {
+  public void setResponses(String responseServed) {
     try {
-      this.responses = Double.parseDouble(responses);
+      this.responseServed = Double.parseDouble(responseServed);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
   public Double getAdClicks() {
-    return adClicks;
+    return lineItemClicks;
   }
 
   public void setAdClicks(String adClicks) {
     try {
-      this.adClicks = Double.parseDouble(adClicks);
+      this.lineItemClicks = Double.parseDouble(adClicks);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
@@ -191,13 +212,19 @@ public class DashboardReport implements Serializable {
   public String toString() {
     return "DashboardReport{" +
       "id=" + id +
+      ", parentId=" + parentId +
       ", dimensionDate=" + dimensionDate +
+      ", advertiserName='" + advertiserName + '\'' +
+      ", deviceName='" + deviceName + '\'' +
+      ", adUnitName='" + adUnitName + '\'' +
+      ", adUnitId=" + adUnitId +
       ", unfilledImpression=" + unfilledImpression +
       ", impression=" + impression +
-      ", revenue=" + revenue +
+      ", lineItemClicks=" + lineItemClicks +
+      ", cpmRevenue=" + cpmRevenue +
       ", adRequest=" + adRequest +
-      ", responses=" + responses +
-      ", adClicks=" + adClicks +
+      ", responseServed=" + responseServed +
+      ", fillRate=" + fillRate +
       '}';
   }
 }

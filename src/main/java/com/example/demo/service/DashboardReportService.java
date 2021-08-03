@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.DashboardAll;
-import com.example.demo.dao.entity.DashboardHbReport;
+import com.example.demo.csv.DashboardAll;
 import com.example.demo.dao.entity.DashboardReport;
 import com.example.demo.dao.repository.DashboardReportRepository;
 import com.example.demo.utils.CustomDate;
@@ -22,7 +21,6 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +32,6 @@ import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
@@ -71,7 +68,7 @@ public class DashboardReportService {
 
     // Create report query.
     ReportQuery reportQuery = new ReportQuery();
-    reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
+    reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME});
     reportQuery.setColumns(
       new Column[]{
         Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
@@ -80,8 +77,7 @@ public class DashboardReportService {
         Column.TOTAL_LINE_ITEM_LEVEL_CPM_AND_CPC_REVENUE,
         Column.TOTAL_AD_REQUESTS,
         Column.TOTAL_RESPONSES_SERVED,
-        Column.TOTAL_FILL_RATE,
-        Column.AD_SERVER_CLICKS
+        Column.TOTAL_FILL_RATE
       });
 
     // Set the filter statement.
@@ -98,6 +94,8 @@ public class DashboardReportService {
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
     reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+    long id[] = {12597864};
+    reportQuery.setCustomDimensionKeyIds(id);
 
 
     // Create report job.
@@ -149,12 +147,16 @@ public class DashboardReportService {
           DashboardReport dashboardReport = new DashboardReport();
           dashboardReport.setParentId(parentId);
           dashboardReport.setDimensionDate(obj.getDate());
+          dashboardReport.setAdUnitId(obj.getAdUnitId());
+          dashboardReport.setAdvertiserName(obj.getAdvertiserName());
+          dashboardReport.setAdUnitName(obj.getAdUnitName());
+          dashboardReport.setDeviceName(obj.getDeviceName());
           dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
           dashboardReport.setImpression(obj.getImpression());
-          dashboardReport.setRevenue(obj.getRevenue());
+          dashboardReport.setRevenue(obj.getCpmRevenue());
           dashboardReport.setAdRequest(obj.getAdRequest());
-          dashboardReport.setResponses(obj.getServed());
-          dashboardReport.setAdClicks(obj.getClicks());
+          dashboardReport.setResponses(obj.getResponseServed());
+          dashboardReport.setAdClicks(obj.getLineItemClicks());
           dashboardReportRepository.save(dashboardReport);
 
         } catch (Exception e) {

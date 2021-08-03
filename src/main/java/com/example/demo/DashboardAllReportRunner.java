@@ -3,6 +3,7 @@ package com.example.demo;
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 import com.beust.jcommander.Parameter;
+import com.example.demo.csv.DashboardAll;
 import com.example.demo.dao.entity.DashboardReport;
 import com.example.demo.dao.repository.DashboardReportRepository;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
@@ -177,10 +178,10 @@ public class DashboardAllReportRunner implements CommandLineRunner {
           dashboardReport.setDimensionDate(obj.getDate());
           dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
           dashboardReport.setImpression(obj.getImpression());
-          dashboardReport.setRevenue(obj.getRevenue());
+          dashboardReport.setRevenue(obj.getCpmRevenue());
           dashboardReport.setAdRequest(obj.getAdRequest());
-          dashboardReport.setResponses(obj.getServed());
-          dashboardReport.setAdClicks(obj.getClicks());
+          dashboardReport.setResponses(obj.getResponseServed());
+          dashboardReport.setAdClicks(obj.getLineItemClicks());
           dashboardReportRepository.save(dashboardReport);
         } catch (Exception e) {
           System.out.println("Error in data save");

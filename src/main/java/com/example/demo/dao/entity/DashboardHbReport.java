@@ -30,6 +30,18 @@ public class DashboardHbReport implements Serializable {
   private Date dimensionDate;
 
   @Column()
+  private String customTargetKey;
+
+  @Column()
+  private String deviceName;
+
+  @Column()
+  private String adUnitName;
+
+  @Column()
+  private Long adUnitId;
+
+  @Column()
   private Double impression;
 
   @Column()
@@ -59,52 +71,6 @@ public class DashboardHbReport implements Serializable {
   @Column(name = "programmatic_responses_served")
   private Double programmaticResponsesServed;
 
-
-  public DashboardHbReport(
-    Long parentId,
-    String dimensionDate,
-    String impression,
-    String click,
-    String ctr,
-    String revenue,
-    String averageECPM,
-    String eligibleImpressions,
-    String measurableImpressions,
-    String viewableImpressions,
-    String adExchangeResponseServed,
-    String programmaticResponsesServed) {
-    System.out.println(
-      parentId + " " +
-      dimensionDate + " " +
-        impression + " " +
-        click + " " +
-        ctr + " " +
-        revenue + " " +
-        averageECPM + " " +
-        eligibleImpressions + " " +
-        measurableImpressions + " " +
-        viewableImpressions + " " +
-        adExchangeResponseServed + " " +
-        programmaticResponsesServed
-    );
-    this.parentId = parentId;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    try {
-      this.dimensionDate = sdf.parse(dimensionDate);
-    } catch (Exception e) {
-      System.out.println("Error occurred " + e.getMessage());
-    }
-    this.impression = Double.parseDouble(impression);
-    this.click = Double.parseDouble(click);
-    this.ctr = Double.parseDouble(ctr);
-    this.revenue = Double.parseDouble(revenue);
-    this.averageECPM = Double.parseDouble(averageECPM);
-    this.eligibleImpressions = Double.parseDouble(eligibleImpressions);
-    this.measurableImpressions = Double.parseDouble(measurableImpressions);
-    this.viewableImpressions = Double.parseDouble(viewableImpressions);
-    this.responseServed = Double.parseDouble(adExchangeResponseServed);
-    this.programmaticResponsesServed = Double.parseDouble(programmaticResponsesServed);
-  }
 
   public DashboardHbReport() {
   }
@@ -136,6 +102,42 @@ public class DashboardHbReport implements Serializable {
       this.dimensionDate = sdf.parse(dimensionDate);
     } catch (Exception e) {
       System.out.println("Error occurred " + e.getMessage());
+    }
+  }
+
+  public String getCustomTargetKey() {
+    return customTargetKey;
+  }
+
+  public void setCustomTargetKey(String customTargetKey) {
+    this.customTargetKey = customTargetKey;
+  }
+
+  public String getDeviceName() {
+    return deviceName;
+  }
+
+  public void setDeviceName(String deviceName) {
+    this.deviceName = deviceName;
+  }
+
+  public String getAdUnitName() {
+    return adUnitName;
+  }
+
+  public void setAdUnitName(String adUnitName) {
+    this.adUnitName = adUnitName;
+  }
+
+  public Long getAdUnitId() {
+    return adUnitId;
+  }
+
+  public void setAdUnitId(String adUnitId) {
+    try {
+      this.adUnitId = Long.parseLong(adUnitId);
+    } catch (NumberFormatException e) {
+      System.out.println(e.getMessage());
     }
   }
 
@@ -248,7 +250,7 @@ public class DashboardHbReport implements Serializable {
 
   public void setAdExchangeResponseServed(String adExchangeResponseServed) {
     try {
-      if(adExchangeResponseServed != null){
+      if (adExchangeResponseServed != null) {
         this.responseServed = Double.parseDouble(adExchangeResponseServed);
       }
     } catch (NumberFormatException e) {
@@ -262,7 +264,7 @@ public class DashboardHbReport implements Serializable {
 
   public void setProgrammaticResponsesServed(String programmaticResponsesServed) {
     try {
-      if(programmaticResponsesServed != null){
+      if (programmaticResponsesServed != null) {
         this.programmaticResponsesServed = Double.parseDouble(programmaticResponsesServed);
       }
     } catch (NumberFormatException e) {
@@ -275,7 +277,12 @@ public class DashboardHbReport implements Serializable {
   public String toString() {
     return "DashboardHbReport{" +
       "id=" + id +
+      ", parentId=" + parentId +
       ", dimensionDate=" + dimensionDate +
+      ", customTargetKey='" + customTargetKey + '\'' +
+      ", deviceName='" + deviceName + '\'' +
+      ", adUnitName='" + adUnitName + '\'' +
+      ", adUnitId=" + adUnitId +
       ", impression=" + impression +
       ", click=" + click +
       ", ctr=" + ctr +
@@ -284,7 +291,7 @@ public class DashboardHbReport implements Serializable {
       ", eligibleImpressions=" + eligibleImpressions +
       ", measurableImpressions=" + measurableImpressions +
       ", viewableImpressions=" + viewableImpressions +
-      ", adExchangeResponseServed=" + responseServed +
+      ", responseServed=" + responseServed +
       ", programmaticResponsesServed=" + programmaticResponsesServed +
       '}';
   }

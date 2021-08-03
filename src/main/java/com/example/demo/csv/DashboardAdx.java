@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.csv;
 
 import com.opencsv.bean.CsvBindByPosition;
 
@@ -7,44 +7,70 @@ public class DashboardAdx {
   private String date;
 
   @CsvBindByPosition(position = 1)
-  private String impression;
+  private String customTargetKey;
 
   @CsvBindByPosition(position = 2)
-  private String click;
+  private String deviceName;
 
   @CsvBindByPosition(position = 3)
-  private String ctr;
-
-  @CsvBindByPosition(position = 4)
-  private String revenue;
-
-  @CsvBindByPosition(position = 5)
-  private String averageECPM;
+  private String adUnitName;
 
   @CsvBindByPosition(position = 6)
-  private String eligibleImpressions;
+  private String adUnitId;
 
   @CsvBindByPosition(position = 7)
-  private String measurableImpressions;
+  private String impression;
 
   @CsvBindByPosition(position = 8)
-  private String viewableImpressions;
+  private String click;
 
   @CsvBindByPosition(position = 9)
-  private String adExchangeResponseServed;
+  private String ctr;
 
   @CsvBindByPosition(position = 10)
-  private String programmaticResponsesServed;
+  private String revenue;
 
+  @CsvBindByPosition(position = 11)
+  private String averageECPM;
+
+  @CsvBindByPosition(position = 12)
+  private String eligibleImpressions;
+
+  @CsvBindByPosition(position = 13)
+  private String measurableImpressions;
+
+  @CsvBindByPosition(position = 14)
+  private String viewableImpressions;
+
+  @CsvBindByPosition(position = 15)
+  private String adExchangeResponseServed;
+
+  @CsvBindByPosition(position = 16)
+  private String programmaticResponsesServed;
 
   public String getDate() {
     return date;
   }
 
+  public String getCustomTargetKey() {
+    return customTargetKey;
+  }
+
+  public String getDeviceName() {
+    return deviceName;
+  }
+
+  public String getAdUnitName() {
+    return adUnitName;
+  }
+
+  public String getAdUnitId() {
+    return adUnitId;
+  }
+
   public String getImpression() {
     return impression;
   }
-
 
   public String getClick() {
     return click;
@@ -70,12 +96,9 @@ public class DashboardAdx {
     return measurableImpressions;
   }
 
-
   public String getViewableImpressions() {
     return viewableImpressions;
   }
-
-
 
   public String getAdExchangeResponseServed() {
     return adExchangeResponseServed;
@@ -89,6 +112,10 @@ public class DashboardAdx {
   public String toString() {
     return "DashboardAdx{" +
       "date='" + date + '\'' +
+      ", customTargetKey='" + customTargetKey + '\'' +
+      ", deviceName='" + deviceName + '\'' +
+      ", adUnitName='" + adUnitName + '\'' +
+      ", adUnitId=" + adUnitId +
       ", impression='" + impression + '\'' +
       ", click='" + click + '\'' +
       ", ctr='" + ctr + '\'' +
