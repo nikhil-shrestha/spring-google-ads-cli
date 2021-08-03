@@ -16,7 +16,7 @@ public class DashboardSchedule {
   @Autowired
   private DashboardReportService allReportService;
 
-  @Scheduled(cron = "0/10 0 * * * ?")
+  @Scheduled(cron = "0 0 0/1 * * ?")
   public void scheduleTask() throws Exception {
     String[] parentIds = {
       "21887933792",
