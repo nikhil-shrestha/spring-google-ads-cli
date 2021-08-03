@@ -225,7 +225,7 @@ public class DashboardAdxReportService {
     }
 
     AdManagerServices adManagerServices = new AdManagerServices();
-    Long parentId = Long.parseLong(pid);
+    long parentId = Long.parseLong(pid);
 
     try {
       try {

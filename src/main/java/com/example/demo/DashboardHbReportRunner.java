@@ -8,12 +8,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-/**
- * This example runs a typical daily inventory report.
- *
- * <p>Credentials and properties in {@code fromFile()} are pulled from the "ads.properties" file.
- * See README for more info.
- */
 @Profile("test")
 @Component
 @Order(value = 3)
