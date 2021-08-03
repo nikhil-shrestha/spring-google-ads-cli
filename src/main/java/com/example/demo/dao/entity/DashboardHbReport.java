@@ -30,18 +30,6 @@ public class DashboardHbReport implements Serializable {
   @Column(name = "dimension_date")
   private Date dimensionDate;
 
-  @Column(name = "advertiser_name")
-  private String advertiserName;
-
-  @Column(name = "device_name")
-  private String deviceName;
-
-  @Column(name = "ad_unit_name")
-  private String adUnitName;
-
-  @Column(name = "ad_unit_id")
-  private Long adUnitId;
-
   @Column()
   private Double impression;
 
@@ -105,43 +93,6 @@ public class DashboardHbReport implements Serializable {
       System.out.println("Error occurred " + e.getMessage());
     }
   }
-
-  public String getAdvertiserName() {
-    return advertiserName;
-  }
-
-  public void setAdvertiserName(String advertiserName) {
-    this.advertiserName = advertiserName;
-  }
-
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  public void setDeviceName(String deviceName) {
-    this.deviceName = deviceName;
-  }
-
-  public String getAdUnitName() {
-    return adUnitName;
-  }
-
-  public void setAdUnitName(String adUnitName) {
-    this.adUnitName = adUnitName;
-  }
-
-  public Long getAdUnitId() {
-    return adUnitId;
-  }
-
-  public void setAdUnitId(String adUnitId) {
-    try {
-      this.adUnitId = Long.parseLong(adUnitId);
-    } catch (NumberFormatException e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
 
   public Double getImpression() {
     return impression;
@@ -279,10 +230,6 @@ public class DashboardHbReport implements Serializable {
       "id=" + id +
       ", parentId=" + parentId +
       ", dimensionDate=" + dimensionDate +
-      ", advertiserName='" + advertiserName + '\'' +
-      ", deviceName='" + deviceName + '\'' +
-      ", adUnitName='" + adUnitName + '\'' +
-      ", adUnitId=" + adUnitId +
       ", impression=" + impression +
       ", click=" + click +
       ", ctr=" + ctr +

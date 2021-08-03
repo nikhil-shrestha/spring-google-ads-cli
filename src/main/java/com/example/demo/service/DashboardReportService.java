@@ -69,7 +69,7 @@ public class DashboardReportService {
 
     // Create report query.
     ReportQuery reportQuery = new ReportQuery();
-    reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME});
+    reportQuery.setDimensions(new Dimension[]{Dimension.DATE});
     reportQuery.setColumns(
       new Column[]{
         Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
@@ -95,11 +95,6 @@ public class DashboardReportService {
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
     reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
-    long[] id = {
-      12597864
-    };
-    reportQuery.setCustomDimensionKeyIds(id);
-
 
     // Create report job.
     ReportJob reportJob = new ReportJob();
@@ -150,10 +145,6 @@ public class DashboardReportService {
           DashboardReport dashboardReport = new DashboardReport();
           dashboardReport.setParentId(parentId);
           dashboardReport.setDimensionDate(obj.getDate());
-          dashboardReport.setAdUnitId(obj.getAdUnitId());
-          dashboardReport.setAdvertiserName(obj.getAdvertiserName());
-          dashboardReport.setAdUnitName(obj.getAdUnitName());
-          dashboardReport.setDeviceName(obj.getDeviceName());
           dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
           dashboardReport.setImpression(obj.getImpression());
           dashboardReport.setRevenue(obj.getCpmRevenue());

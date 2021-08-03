@@ -7,61 +7,32 @@ public class DashboardHb {
   private String date;
 
   @CsvBindByPosition(position = 1)
-  private String advertiserName;
-
-  @CsvBindByPosition(position = 2)
-  private String deviceName;
-
-  @CsvBindByPosition(position = 3)
-  private String adUnitName;
-
-  @CsvBindByPosition(position = 6)
-  private String adUnitId;
-
-  @CsvBindByPosition(position = 7)
   private String impression;
 
-  @CsvBindByPosition(position = 8)
+  @CsvBindByPosition(position = 2)
   private String click;
 
-  @CsvBindByPosition(position = 9)
+  @CsvBindByPosition(position = 3)
   private String ctr;
 
-  @CsvBindByPosition(position = 10)
+  @CsvBindByPosition(position = 4)
   private String averageECPM;
 
-  @CsvBindByPosition(position = 11)
+  @CsvBindByPosition(position = 5)
   private String revenue;
 
-
-  @CsvBindByPosition(position = 12)
+  @CsvBindByPosition(position = 6)
   private String eligibleImpressions;
 
-  @CsvBindByPosition(position = 13)
+  @CsvBindByPosition(position = 7)
   private String measurableImpressions;
 
-  @CsvBindByPosition(position = 14)
+  @CsvBindByPosition(position = 8)
   private String viewableImpressions;
 
 
   public String getDate() {
     return date;
-  }
-
-  public String getAdvertiserName() {
-    return advertiserName;
-  }
-
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  public String getAdUnitName() {
-    return adUnitName;
-  }
-
-  public String getAdUnitId() {
-    return adUnitId;
   }
 
   public String getImpression() {
@@ -100,10 +71,6 @@ public class DashboardHb {
   public String toString() {
     return "DashboardHb{" +
       "date='" + date + '\'' +
-      ", advertiserName='" + advertiserName + '\'' +
-      ", deviceName='" + deviceName + '\'' +
-      ", adUnitName='" + adUnitName + '\'' +
-      ", adUnitId='" + adUnitId + '\'' +
       ", impression='" + impression + '\'' +
       ", click='" + click + '\'' +
       ", ctr='" + ctr + '\'' +
