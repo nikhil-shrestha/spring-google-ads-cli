@@ -43,6 +43,10 @@ public class DashboardHbReportService {
   @Autowired
   private DashboardHbReportRepository dashboardHbReportRepository;
 
+  public long getCount() {
+    return dashboardHbReportRepository.count();
+  }
+
   /**
    * Runs the example.
    *
@@ -54,7 +58,7 @@ public class DashboardHbReportService {
    * @throws InterruptedException if the thread was interrupted while waiting for the report to be
    *                              ready.
    */
-  public void runExample(AdManagerServices adManagerServices, AdManagerSession session, long parentId)
+  public void runExample(AdManagerServices adManagerServices, AdManagerSession session, long parentId, String type)
     throws IOException, InterruptedException {
     // Get the ReportService.
     ReportServiceInterface reportService =
@@ -96,17 +100,19 @@ public class DashboardHbReportService {
     reportQuery.setStatement(statementBuilder.toStatement());
 
     // Set the dynamic date range type or a custom start and end date.
-//    reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+    if (type.equals("cron")) {
+      reportQuery.setDateRangeType(DateRangeType.YESTERDAY);
+    } else {
+      DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
+      String thirtyDaysDateString = dateFormat.format(CustomDate.ninetyDays());
 
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
-    String thirtyDaysDateString = dateFormat.format(CustomDate.ninetyDays());
+      // TODO: check default timezone (Google Adx TimeZone)
+      reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
+      reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
+      reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
+    }
 
-//    TODO: check default timezone (Google Adx TimeZone)
-    // Set the start and end dates or choose a dynamic date range type.
-    reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
-    reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
-    reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
     long[] id = {
       12597864
     };
@@ -188,7 +194,7 @@ public class DashboardHbReportService {
     }
   }
 
-  public void save(String pid) {
+  public void save(String pid, String type) {
     long start = System.currentTimeMillis();
 
     AdManagerSession session;
@@ -227,7 +233,7 @@ public class DashboardHbReportService {
 
     try {
       try {
-        runExample(adManagerServices, session, parentId);
+        runExample(adManagerServices, session, parentId, type);
       } catch (ApiException apiException) {
         // ApiException is the base class for most exceptions thrown by an API request. Instances
         // of this exception have a message and a collection of ApiErrors that indicate the

@@ -16,7 +16,7 @@ public class DashboardSchedule {
   @Autowired
   private DashboardReportService allReportService;
 
-  @Scheduled(cron = "0 0 0/1 * * ?")
+  @Scheduled(cron = "0 0 1 * * ?")
   public void scheduleTask() throws Exception {
     String[] parentIds = {
       "21887933792",
@@ -32,17 +32,17 @@ public class DashboardSchedule {
     };
 
     for (String parentId : parentIds) {
-      allReportService.save(parentId);
+      allReportService.save(parentId, "cron");
       Thread.sleep(5000);
     }
 
     for (String parentId : parentIds) {
-      adxReportService.save(parentId);
+      adxReportService.save(parentId, "cron");
       Thread.sleep(5000);
     }
 
     for (String parentId : parentIds) {
-      hbReportService.save(parentId);
+      hbReportService.save(parentId, "cron");
       Thread.sleep(5000);
     }
 
