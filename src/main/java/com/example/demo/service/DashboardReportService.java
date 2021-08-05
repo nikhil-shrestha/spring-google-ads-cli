@@ -151,6 +151,7 @@ public class DashboardReportService {
           dashboardReport.setAdRequest(obj.getAdRequest());
           dashboardReport.setResponses(obj.getResponseServed());
           dashboardReport.setAdClicks(obj.getLineItemClicks());
+          dashboardReport.setFillRate(obj.getFillRate());
           dashboardReportRepository.save(dashboardReport);
 
         } catch (Exception e) {

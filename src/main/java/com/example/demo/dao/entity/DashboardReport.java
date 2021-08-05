@@ -159,6 +159,15 @@ public class DashboardReport implements Serializable {
     }
   }
 
+
+  public void setFillRate(String fillRate) {
+    try {
+      this.fillRate = Double.parseDouble(fillRate);
+    } catch (NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
   @Override
   public String toString() {
     return "DashboardReport{" +
