@@ -26,8 +26,8 @@ public class DashboardReport implements Serializable {
 
   private Long parentId;
 
-  @Column(name = "dimension_date")
-  private Date dimensionDate;
+  @Column(name = "date")
+  private Date date;
 
   @Column(name = "advertiser_name")
   private String advertiserName;
@@ -41,26 +41,26 @@ public class DashboardReport implements Serializable {
   @Column(name = "adUnit_id")
   private Long adUnitId;
 
-  @Column(name = "unfilled_impression")
-  private Double unfilledImpression;
+  @Column(name = "total_unfilled_impressions")
+  private Double totalUnfilledImpressions;
 
-  @Column()
-  private Double impression;
+  @Column(name = "total_impressions")
+  private Double totalImpressions;
 
-  @Column(name = "line_item_clicks")
-  private Double lineItemClicks;
+  @Column(name = "total_item_clicks")
+  private Double totalItemClicks;
 
-  @Column(name = "cpm_revenue")
-  private Double cpmRevenue;
+  @Column(name = "total_revenue")
+  private Double totalRevenue;
 
-  @Column(name = "ad_request")
-  private Double adRequest;
+  @Column(name = "total_ad_request")
+  private Double totalAdRequest;
 
-  @Column(name = "response_served")
-  private Double responseServed;
+  @Column(name = "total_response_served")
+  private Double totalResponseServed;
 
-  @Column(name = "fill_rate")
-  private Double fillRate;
+  @Column(name = "total_fill_rate")
+  private Double totalFillRate;
 
 
   public DashboardReport() {
@@ -74,7 +74,6 @@ public class DashboardReport implements Serializable {
     this.id = id;
   }
 
-
   public Long getParentId() {
     return parentId;
   }
@@ -83,15 +82,14 @@ public class DashboardReport implements Serializable {
     this.parentId = parentId;
   }
 
-
-  public Date getDimensionDate() {
-    return dimensionDate;
+  public Date getDate() {
+    return date;
   }
 
-  public void setDimensionDate(String dimensionDate) {
+  public void setDate(String date) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     try {
-      this.dimensionDate = sdf.parse(dimensionDate);
+      this.date = sdf.parse(date);
     } catch (Exception e) {
       System.out.println("Error occurred " + e.getMessage());
     }
@@ -133,78 +131,88 @@ public class DashboardReport implements Serializable {
     }
   }
 
-  public Double getUnfilledImpression() {
-    return unfilledImpression;
+  public Double getTotalUnfilledImpressions() {
+    return totalUnfilledImpressions;
   }
 
-  public void setUnfilledImpression(String unfilledImpression) {
+  public void setTotalUnfilledImpressions(String unfilledImpression) {
     try {
-      this.unfilledImpression = Double.parseDouble(unfilledImpression);
-    } catch (NumberFormatException e) {
-      System.out.println(e.getMessage());
-    }
-
-  }
-
-  public Double getImpression() {
-    return impression;
-  }
-
-  public void setImpression(String impression) {
-    try {
-      this.impression = Double.parseDouble(impression);
+      this.totalUnfilledImpressions = Double.parseDouble(unfilledImpression);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getRevenue() {
-    return cpmRevenue;
+  public Double getTotalImpressions() {
+    return totalImpressions;
   }
 
-  public void setRevenue(String revenue) {
+  public void setTotalImpressions(String impression) {
     try {
-      this.cpmRevenue = Double.parseDouble(revenue);
+      this.totalImpressions = Double.parseDouble(impression);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdRequest() {
-    return adRequest;
-
+  public Double getTotalItemClicks() {
+    return totalItemClicks;
   }
 
-  public void setAdRequest(String adRequest) {
+  public void setTotalItemClicks(String adClicks) {
     try {
-      this.adRequest = Double.parseDouble(adRequest);
+      this.totalItemClicks = Double.parseDouble(adClicks);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getResponses() {
-    return responseServed;
+  public Double getTotalRevenue() {
+    return totalRevenue;
   }
 
-  public void setResponses(String responseServed) {
+  public void setTotalRevenue(String revenue) {
     try {
-      this.responseServed = Double.parseDouble(responseServed);
+      this.totalRevenue = Double.parseDouble(revenue);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdClicks() {
-    return lineItemClicks;
+  public Double getTotalAdRequest() {
+    return totalAdRequest;
   }
 
-  public void setAdClicks(String adClicks) {
+  public void setTotalAdRequest(String adRequest) {
     try {
-      this.lineItemClicks = Double.parseDouble(adClicks);
+      this.totalAdRequest = Double.parseDouble(adRequest);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  public Double getTotalResponseServed() {
+    return totalResponseServed;
+  }
+
+  public void setTotalResponseServed(String responseServed) {
+    try {
+      this.totalResponseServed = Double.parseDouble(responseServed);
+    } catch (NumberFormatException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public Double getTotalFillRate() {
+    return totalFillRate;
+  }
+
+  public void setTotalFillRate(String fillRate) {
+      try {
+        this.totalFillRate = Double.parseDouble(fillRate);
+      } catch (NumberFormatException e) {
+        System.out.println(e.getMessage());
+      }
   }
 
   @Override
@@ -212,18 +220,18 @@ public class DashboardReport implements Serializable {
     return "DashboardReport{" +
       "id=" + id +
       ", parentId=" + parentId +
-      ", dimensionDate=" + dimensionDate +
+      ", date=" + date +
       ", advertiserName='" + advertiserName + '\'' +
       ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +
-      ", unfilledImpression=" + unfilledImpression +
-      ", impression=" + impression +
-      ", lineItemClicks=" + lineItemClicks +
-      ", cpmRevenue=" + cpmRevenue +
-      ", adRequest=" + adRequest +
-      ", responseServed=" + responseServed +
-      ", fillRate=" + fillRate +
+      ", totalUnfilledImpression=" + totalUnfilledImpressions +
+      ", totalImpression=" + totalImpressions +
+      ", totalItemClicks=" + totalItemClicks +
+      ", totalRevenue=" + totalRevenue +
+      ", totalAdRequest=" + totalAdRequest +
+      ", totalResponseServed=" + totalResponseServed +
+      ", totalFillRate=" + totalFillRate +
       '}';
   }
 }

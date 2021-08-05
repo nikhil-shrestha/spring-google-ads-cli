@@ -160,22 +160,22 @@ public class DashboardAdxReportService {
 
           DashboardAdxReport dashboardAdxReport = new DashboardAdxReport();
           dashboardAdxReport.setParentId(parentId);
-          dashboardAdxReport.setDimensionDate(obj.getDate());
-          dashboardAdxReport.setImpression(obj.getImpression());
+          dashboardAdxReport.setDate(obj.getDate());
+          dashboardAdxReport.setAdxImpressions(obj.getImpression());
           dashboardAdxReport.setAdvertiserName(obj.getAdvertiserName());
           dashboardAdxReport.setDeviceName(obj.getDeviceName());
           dashboardAdxReport.setAdUnitId(obj.getAdUnitId());
           dashboardAdxReport.setAdUnitName(obj.getAdUnitName());
 
-          dashboardAdxReport.setAverageECPM(obj.getAverageECPM());
-          dashboardAdxReport.setClick(obj.getClick());
-          dashboardAdxReport.setCtr(obj.getCtr());
-          dashboardAdxReport.setRevenue(obj.getRevenue());
-          dashboardAdxReport.setAdExchangeResponseServed(obj.getAdExchangeResponseServed());
-          dashboardAdxReport.setEligibleImpressions(obj.getEligibleImpressions());
-          dashboardAdxReport.setMeasurableImpressions(obj.getMeasurableImpressions());
-          dashboardAdxReport.setViewableImpressions(obj.getViewableImpressions());
-          dashboardAdxReport.setProgrammaticResponsesServed(obj.getProgrammaticResponsesServed());
+          dashboardAdxReport.setAdxECPM(obj.getAverageECPM());
+          dashboardAdxReport.setAdxItemClicks(obj.getClick());
+          dashboardAdxReport.setAdxItemCtr(obj.getCtr());
+          dashboardAdxReport.setAdxRevenue(obj.getRevenue());
+          dashboardAdxReport.setAdxResponseServe(obj.getAdExchangeResponseServed());
+          dashboardAdxReport.setAdxEligibleImpressions(obj.getEligibleImpressions());
+          dashboardAdxReport.setAdxMeasurableImpressions(obj.getMeasurableImpressions());
+          dashboardAdxReport.setAdxViewableImpressions(obj.getViewableImpressions());
+          dashboardAdxReport.setAdsenseResponsesServed(obj.getProgrammaticResponsesServed());
           dashboardAdxReportRepository.save(dashboardAdxReport);
           
         } catch (Exception e) {

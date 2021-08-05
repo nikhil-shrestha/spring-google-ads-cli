@@ -91,6 +91,7 @@ public class DashboardReportService {
     String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
     String thirtyDaysDateString = dateFormat.format(CustomDate.ninetyDays());
 
+//    TODO: check default timezone (Google Adx TimeZone)
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
@@ -149,17 +150,18 @@ public class DashboardReportService {
 
           DashboardReport dashboardReport = new DashboardReport();
           dashboardReport.setParentId(parentId);
-          dashboardReport.setDimensionDate(obj.getDate());
+          dashboardReport.setDate(obj.getDate());
           dashboardReport.setAdUnitId(obj.getAdUnitId());
           dashboardReport.setAdvertiserName(obj.getAdvertiserName());
           dashboardReport.setAdUnitName(obj.getAdUnitName());
           dashboardReport.setDeviceName(obj.getDeviceName());
-          dashboardReport.setUnfilledImpression(obj.getUnfilledImpression());
-          dashboardReport.setImpression(obj.getImpression());
-          dashboardReport.setRevenue(obj.getCpmRevenue());
-          dashboardReport.setAdRequest(obj.getAdRequest());
-          dashboardReport.setResponses(obj.getResponseServed());
-          dashboardReport.setAdClicks(obj.getLineItemClicks());
+          dashboardReport.setTotalUnfilledImpressions(obj.getUnfilledImpression());
+          dashboardReport.setTotalImpressions(obj.getImpression());
+          dashboardReport.setTotalRevenue(obj.getCpmRevenue());
+          dashboardReport.setTotalAdRequest(obj.getAdRequest());
+          dashboardReport.setTotalResponseServed(obj.getResponseServed());
+          dashboardReport.setTotalItemClicks(obj.getLineItemClicks());
+          dashboardReport.setTotalFillRate(obj.getFillRate());
           dashboardReportRepository.save(dashboardReport);
 
         } catch (Exception e) {

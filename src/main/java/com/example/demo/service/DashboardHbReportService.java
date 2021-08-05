@@ -102,6 +102,7 @@ public class DashboardHbReportService {
     String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
     String thirtyDaysDateString = dateFormat.format(CustomDate.ninetyDays());
 
+//    TODO: check default timezone (Google Adx TimeZone)
     // Set the start and end dates or choose a dynamic date range type.
     reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
     reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
@@ -160,19 +161,19 @@ public class DashboardHbReportService {
 
           DashboardHbReport dashboardHbReport = new DashboardHbReport();
           dashboardHbReport.setParentId(parentId);
-          dashboardHbReport.setDimensionDate(obj.getDate());
+          dashboardHbReport.setDate(obj.getDate());
           dashboardHbReport.setAdvertiserName(obj.getAdvertiserName());
           dashboardHbReport.setDeviceName(obj.getDeviceName());
           dashboardHbReport.setAdUnitName(obj.getAdUnitName());
           dashboardHbReport.setAdUnitId(obj.getAdUnitId());
-          dashboardHbReport.setImpression(obj.getImpression());
-          dashboardHbReport.setAverageECPM(obj.getAverageECPM());
-          dashboardHbReport.setClick(obj.getClick());
-          dashboardHbReport.setCtr(obj.getCtr());
-          dashboardHbReport.setRevenue(obj.getRevenue());
-          dashboardHbReport.setEligibleImpressions(obj.getEligibleImpressions());
-          dashboardHbReport.setMeasurableImpressions(obj.getMeasurableImpressions());
-          dashboardHbReport.setViewableImpressions(obj.getViewableImpressions());
+          dashboardHbReport.setAdserverImpressions(obj.getImpression());
+          dashboardHbReport.setAdserverECPM(obj.getAverageECPM());
+          dashboardHbReport.setAdserverClicks(obj.getClick());
+          dashboardHbReport.setAdserverCtr(obj.getCtr());
+          dashboardHbReport.setAdserverRevenue(obj.getRevenue());
+          dashboardHbReport.setAdserverEligibleImpressions(obj.getEligibleImpressions());
+          dashboardHbReport.setAdserverMeasurableImpressions(obj.getMeasurableImpressions());
+          dashboardHbReport.setAdserverViewableImpressions(obj.getViewableImpressions());
           dashboardHbReportRepository.save(dashboardHbReport);
 
         } catch (Exception e) {

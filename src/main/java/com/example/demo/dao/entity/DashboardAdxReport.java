@@ -10,13 +10,13 @@ import java.util.*;
 public class DashboardAdxReport implements Serializable {
   @Id
   @SequenceGenerator(
-    name = "dashboardAdx_sequence",
-    sequenceName = "dashboardAdx_sequence",
+    name = "dashboard_adx_sequence",
+    sequenceName = "dashboard_adx_sequence",
     allocationSize = 1
   )
   @GeneratedValue(
     strategy = GenerationType.SEQUENCE,
-    generator = "dashboardAdx_sequence"
+    generator = "dashboard_adx_sequence"
   )
   @Column(
     name = "id",
@@ -26,8 +26,8 @@ public class DashboardAdxReport implements Serializable {
 
   private Long parentId;
 
-  @Column(name = "dimension_date")
-  private Date dimensionDate;
+  @Column(name = "date")
+  private Date date;
 
   @Column(name = "advertiser_name")
   private String advertiserName;
@@ -41,37 +41,35 @@ public class DashboardAdxReport implements Serializable {
   @Column(name = "ad_unit_id")
   private Long adUnitId;
 
-  @Column()
-  private Double impression;
+  @Column(name = "adx_impressions")
+  private Double adxImpressions;
 
-  @Column()
-  private Double click;
+  @Column(name = "adx_item_clicks")
+  private Double adxItemClicks;
 
-  @Column()
-  private Double ctr;
+  @Column(name = "adx_item_ctr")
+  private Double adxItemCtr;
 
-  @Column()
-  private Double revenue;
+  @Column(name = "adx_revenue")
+  private Double adxRevenue;
 
-  @Column(name = "average_eCPM")
-  private Double averageECPM;
+  @Column(name = "adx_ecpm")
+  private Double adxECPM;
 
-  @Column(name = "eligible_impressions")
-  private Double eligibleImpressions;
+  @Column(name = "adx_eligible_impressions")
+  private Double adxEligibleImpressions;
 
-  @Column(name = "measurable_impressions")
-  private Double measurableImpressions;
+  @Column(name = "adx_measurable_impressions")
+  private Double adxMeasurableImpressions;
 
-  @Column(name = "viewable_impressions")
-  private Double viewableImpressions;
+  @Column(name = "adx_viewable_impressions")
+  private Double adxViewableImpressions;
 
-  @Column(name = "ad_exchange_responses_served")
-  private Double adExchangeResponseServed;
+  @Column(name = "adx_responses_served")
+  private Double adxResponseServed;
 
-  @Column(name = "programmatic_responses_served")
-  private Double programmaticResponsesServed;
-
-
+  @Column(name = "adsense_responses_served")
+  private Double adsenseResponsesServed;
 
   public DashboardAdxReport() {
   }
@@ -92,14 +90,14 @@ public class DashboardAdxReport implements Serializable {
     this.parentId = parentId;
   }
 
-  public Date getDimensionDate() {
-    return dimensionDate;
+  public Date getDate() {
+    return date;
   }
 
-  public void setDimensionDate(String dimensionDate) {
+  public void setDate(String date) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     try {
-      this.dimensionDate = sdf.parse(dimensionDate);
+      this.date = sdf.parse(date);
     } catch (Exception e) {
       System.out.println("Error occurred " + e.getMessage());
     }
@@ -141,129 +139,123 @@ public class DashboardAdxReport implements Serializable {
     }
   }
 
-  public Double getImpression() {
-    return impression;
+  public Double getAdxImpressions() {
+    return adxImpressions;
   }
 
-  public void setImpression(String impression) {
+  public void setAdxImpressions(String impression) {
     try {
       System.out.println("impression = " + impression);
-      this.impression = Double.parseDouble(impression);
+      this.adxImpressions = Double.parseDouble(impression);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
+  public Double getAdxItemClicks() {
+    return adxItemClicks;
 
-  public Double getClick() {
-    return click;
   }
 
-  public void setClick(String click) {
+  public void setAdxItemClicks(String click) {
     try {
-      this.click = Double.parseDouble(click);
+      this.adxItemClicks = Double.parseDouble(click);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getCtr() {
-    return ctr;
+  public Double getAdxItemCtr() {
+    return adxItemCtr;
   }
 
-  public void setCtr(String ctr) {
+  public void setAdxItemCtr(String ctr) {
     try {
-      this.ctr = Double.parseDouble(ctr);
+      this.adxItemCtr = Double.parseDouble(ctr);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-
-  public Double getRevenue() {
-    return revenue;
+  public Double getAdxRevenue() {
+    return adxRevenue;
   }
 
-  public void setRevenue(String revenue) {
+  public void setAdxRevenue(String revenue) {
     try {
-      this.revenue = Double.parseDouble(revenue);
+      this.adxRevenue = Double.parseDouble(revenue);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-
-  public Double getAverageECPM() {
-    return averageECPM;
+  public Double getAdxECPM() {
+    return adxECPM;
   }
 
-  public void setAverageECPM(String averageECPM) {
+  public void setAdxECPM(String averageECPM) {
     try {
-      this.averageECPM = Double.parseDouble(averageECPM);
+      this.adxECPM = Double.parseDouble(averageECPM);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-
-  public Double getEligibleImpressions() {
-    return eligibleImpressions;
+  public Double getAdxEligibleImpressions() {
+    return adxEligibleImpressions;
   }
 
-  public void setEligibleImpressions(String eligibleImpressions) {
+  public void setAdxEligibleImpressions(String eligibleImpressions) {
     try {
-      this.eligibleImpressions = Double.parseDouble(eligibleImpressions);
+      this.adxEligibleImpressions = Double.parseDouble(eligibleImpressions);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-
-  public Double getMeasurableImpressions() {
-    return measurableImpressions;
+  public Double getAdxMeasurableImpressions() {
+    return adxMeasurableImpressions;
   }
 
-  public void setMeasurableImpressions(String measurableImpressions) {
+  public void setAdxMeasurableImpressions(String measurableImpressions) {
     try {
-      this.measurableImpressions = Double.parseDouble(measurableImpressions);
+      this.adxMeasurableImpressions = Double.parseDouble(measurableImpressions);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-
-  public Double getViewableImpressions() {
-    return viewableImpressions;
+  public Double getAdxViewableImpressions() {
+    return adxViewableImpressions;
   }
 
-  public void setViewableImpressions(String viewableImpressions) {
+  public void setAdxViewableImpressions(String viewableImpressions) {
     try {
-      this.viewableImpressions = Double.parseDouble(viewableImpressions);
+      this.adxViewableImpressions = Double.parseDouble(viewableImpressions);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-
-  public Double getAdExchangeResponseServed() {
-    return adExchangeResponseServed;
+  public Double getAdxResponseServed() {
+    return adxResponseServed;
   }
 
-  public void setAdExchangeResponseServed(String adExchangeResponseServed) {
+  public void setAdxResponseServe(String responseServed) {
     try {
-      this.adExchangeResponseServed = Double.parseDouble(adExchangeResponseServed);
+      this.adxResponseServed = Double.parseDouble(responseServed);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getProgrammaticResponsesServed() {
-    return programmaticResponsesServed;
+  public Double getAdsenseResponsesServed() {
+    return adsenseResponsesServed;
   }
 
-  public void setProgrammaticResponsesServed(String programmaticResponsesServed) {
+  public void setAdsenseResponsesServed(String responseServed) {
     try {
-      this.programmaticResponsesServed = Double.parseDouble(programmaticResponsesServed);
+      this.adsenseResponsesServed = Double.parseDouble(responseServed);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
@@ -274,21 +266,21 @@ public class DashboardAdxReport implements Serializable {
     return "DashboardAdxReport{" +
       "id=" + id +
       ", parentId=" + parentId +
-      ", dimensionDate=" + dimensionDate +
+      ", date=" + date +
       ", advertiserName='" + advertiserName + '\'' +
       ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +
-      ", impression=" + impression +
-      ", click=" + click +
-      ", ctr=" + ctr +
-      ", revenue=" + revenue +
-      ", averageECPM=" + averageECPM +
-      ", eligibleImpressions=" + eligibleImpressions +
-      ", measurableImpressions=" + measurableImpressions +
-      ", viewableImpressions=" + viewableImpressions +
-      ", adExchangeResponseServed=" + adExchangeResponseServed +
-      ", programmaticResponsesServed=" + programmaticResponsesServed +
+      ", adxImpressions=" + adxImpressions +
+      ", adxItemClicks=" + adxItemClicks +
+      ", adxItemCtr=" + adxItemCtr +
+      ", adxRevenue=" + adxRevenue +
+      ", adxECPM=" + adxECPM +
+      ", adxEligibleImpressions=" + adxEligibleImpressions +
+      ", adxMeasurableImpressions=" + adxMeasurableImpressions +
+      ", adxViewableImpressions=" + adxViewableImpressions +
+      ", adxResponseServed=" + adxResponseServed +
+      ", adsenseResponsesServed=" + adsenseResponsesServed +
       '}';
   }
 }
