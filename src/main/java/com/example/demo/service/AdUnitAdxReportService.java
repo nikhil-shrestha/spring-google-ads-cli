@@ -151,7 +151,7 @@ public class AdUnitAdxReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("adunit-all-report-", ".csv");
+    File file = File.createTempFile("adunit-adx-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 

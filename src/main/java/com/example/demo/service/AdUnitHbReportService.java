@@ -146,7 +146,7 @@ public class AdUnitHbReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("adunit-all-report-", ".csv");
+    File file = File.createTempFile("adunit-hb-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 
