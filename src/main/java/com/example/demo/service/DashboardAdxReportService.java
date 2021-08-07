@@ -65,18 +65,10 @@ public class DashboardAdxReportService {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
-    String[] order = {
-      "2678679591",
-      "2715078140",
-      "2766086578",
-      "2809403236"
-    };
-    String orderIds = String.join(",", order);
-
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("ORDER_ID IN (" + orderIds + ") AND PARENT_AD_UNIT_ID = :id")
+        .where("PARENT_AD_UNIT_ID = :id")
         .withBindVariableValue("id", parentId)
         .removeLimitAndOffset();
 
