@@ -1,8 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.csv.geo.GeoAll;
-import com.example.demo.dao.entity.GeoReport;
-import com.example.demo.dao.repository.GeoAllReportRepository;
 import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
 import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
@@ -17,14 +14,11 @@ import com.google.api.ads.common.lib.exception.ValidationException;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
-import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -36,8 +30,8 @@ import java.util.List;
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 @Service
-public class AdUnitAllReportService {
-  private static final Logger logger = LoggerFactory.getLogger(AdUnitAllReportService.class);
+public class AdUnitReportService {
+  private static final Logger logger = LoggerFactory.getLogger(AdUnitReportService.class);
 
 
   public static ArrayList<String> getAdUnitIds(AdManagerServices adManagerServices, AdManagerSession session, long parentAdUnitId)

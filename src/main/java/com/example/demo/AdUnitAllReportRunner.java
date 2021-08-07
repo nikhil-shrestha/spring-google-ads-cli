@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.service.AdUnitAllReportService;
+import com.example.demo.service.AdUnitReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class AdUnitAllReportRunner implements CommandLineRunner {
 
   @Autowired
-  private AdUnitAllReportService allReportService;
+  private AdUnitReportService allReportService;
 
   @Override
   public void run(String... args) {
