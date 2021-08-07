@@ -63,11 +63,12 @@ public class GeoAdxReportService {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
-    List<String> order = new ArrayList<>();
-    order.add("2678679591");
-    order.add("2715078140");
-    order.add("2766086578");
-    order.add("2809403236");
+    String[] order = {
+      "2678679591",
+      "2715078140",
+      "2766086578",
+      "2809403236"
+    };
     String orderIds = String.join(",", order);
 
     // Create statement

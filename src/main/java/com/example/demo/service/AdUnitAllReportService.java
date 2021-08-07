@@ -37,7 +37,7 @@ import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_
 
 @Service
 public class AdUnitAllReportService {
-  private static final Logger logger = LoggerFactory.getLogger(GeoAllReportService.class);
+  private static final Logger logger = LoggerFactory.getLogger(AdUnitAllReportService.class);
 
 
   public static ArrayList<String> getAdUnitIds(AdManagerServices adManagerServices, AdManagerSession session, long parentAdUnitId)
@@ -89,14 +89,13 @@ public class AdUnitAllReportService {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
-    ArrayList<String> listIds = getAdUnitIds(adManagerServices, session, parentId);
-    String orderIds = String.join(",", listIds);
-
+    List<String> listIds = getAdUnitIds(adManagerServices, session, parentId);
+    String adUnitIds = String.join(",", listIds);
 
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("AD_UNIT_ID IN (" + orderIds + ")")
+        .where("AD_UNIT_ID IN (" + adUnitIds + ")")
         .removeLimitAndOffset();
 
     // Create report query.
@@ -105,6 +104,7 @@ public class AdUnitAllReportService {
       new Dimension[]{
         Dimension.AD_UNIT_NAME,
         Dimension.DATE,
+        Dimension.CUSTOM_DIMENSION,
       });
     reportQuery.setAdUnitView(ReportQueryAdUnitView.FLAT);
     reportQuery.setColumns(
@@ -134,6 +134,11 @@ public class AdUnitAllReportService {
       reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
       reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
     }
+
+    long[] id = {
+      12597864
+    };
+    reportQuery.setCustomDimensionKeyIds(id);
 
 
     // Create report job.

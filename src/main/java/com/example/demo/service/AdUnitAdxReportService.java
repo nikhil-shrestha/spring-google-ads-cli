@@ -1,8 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.csv.DashboardHb;
-import com.example.demo.dao.entity.DashboardHbReport;
-import com.example.demo.dao.repository.DashboardHbReportRepository;
 import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
 import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
@@ -17,35 +14,56 @@ import com.google.api.ads.common.lib.exception.ValidationException;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
-import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 @Service
-public class DashboardHbReportService {
-  private static final Logger logger = LoggerFactory.getLogger(DashboardHbReportService.class);
+public class AdUnitAdxReportService {
+  private static final Logger logger = LoggerFactory.getLogger(AdUnitAdxReportService.class);
 
-  @Autowired
-  private DashboardHbReportRepository dashboardHbReportRepository;
+  public static ArrayList<String> getAdUnitIds(AdManagerServices adManagerServices, AdManagerSession session, long parentAdUnitId)
+    throws RemoteException {
+    // Get the InventoryService.
+    InventoryServiceInterface inventoryService =
+      adManagerServices.get(session, InventoryServiceInterface.class);
 
-  public long getCount() {
-    return dashboardHbReportRepository.count();
+
+    // Create a statement to select ad units under the parent ad unit.
+    StatementBuilder statementBuilder =
+      new StatementBuilder()
+        .where("parentId = :parentId")
+        .withBindVariableValue("parentId", parentAdUnitId);
+
+    // Default for total result set size.
+    int totalResultSetSize = 0;
+
+    ArrayList<String> ids = new ArrayList<>();
+
+
+    AdUnitPage page = inventoryService.getAdUnitsByStatement(statementBuilder.toStatement());
+    if (page.getResults() != null) {
+      for (AdUnit adUnit : page.getResults()) {
+        ids.add(adUnit.getId());
+      }
+    }
+
+    System.out.printf("Number of results found: %d%n", totalResultSetSize);
+
+    return ids;
   }
+
 
   /**
    * Runs the example.
@@ -64,43 +82,41 @@ public class DashboardHbReportService {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
+    List<String> listIds = getAdUnitIds(adManagerServices, session, parentId);
+    String adUnitIds = String.join(",", listIds);
+
     String[] order = {
-      "2813565031",
-      "2813507675",
-      "2813458214",
-      "2813646901",
-      "2813487542",
-      "2813643757",
-      "2813643757"
+      "2678679591",
+      "2715078140",
+      "2766086578",
+      "2809403236"
     };
     String orderIds = String.join(",", order);
 
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("ORDER_ID IN (" + orderIds + ") AND PARENT_AD_UNIT_ID = :id")
-        .withBindVariableValue("id", parentId)
+        .where("AD_UNIT_ID IN (" + adUnitIds + ") AND ORDER_ID IN (" + orderIds + ")")
         .removeLimitAndOffset();
 
     // Create report query.
     ReportQuery reportQuery = new ReportQuery();
     reportQuery.setDimensions(
       new Dimension[]{
+        Dimension.AD_UNIT_NAME,
         Dimension.DATE,
         Dimension.CUSTOM_DIMENSION,
-        Dimension.DEVICE_CATEGORY_NAME,
-        Dimension.AD_UNIT_NAME
       });
+    reportQuery.setAdUnitView(ReportQueryAdUnitView.FLAT);
     reportQuery.setColumns(
       new Column[]{
-        Column.AD_SERVER_IMPRESSIONS,
-        Column.AD_SERVER_CLICKS,
-        Column.AD_SERVER_CTR,
-        Column.AD_SERVER_WITHOUT_CPD_AVERAGE_ECPM,
-        Column.AD_SERVER_CPM_AND_CPC_REVENUE,
-        Column.AD_SERVER_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
-        Column.AD_SERVER_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
-        Column.AD_SERVER_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
+        Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
+        Column.TOTAL_LINE_ITEM_LEVEL_IMPRESSIONS,
+        Column.TOTAL_LINE_ITEM_LEVEL_CLICKS,
+        Column.TOTAL_LINE_ITEM_LEVEL_CPM_AND_CPC_REVENUE,
+        Column.TOTAL_AD_REQUESTS,
+        Column.TOTAL_RESPONSES_SERVED,
+        Column.TOTAL_FILL_RATE
       });
 
     // Set the filter statement.
@@ -125,7 +141,6 @@ public class DashboardHbReportService {
     };
     reportQuery.setCustomDimensionKeyIds(id);
 
-
     // Create report job.
     ReportJob reportJob = new ReportJob();
     reportJob.setReportQuery(reportQuery);
@@ -140,7 +155,7 @@ public class DashboardHbReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-hb-report-", ".csv");
+    File file = File.createTempFile("adunit-all-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 
@@ -152,53 +167,8 @@ public class DashboardHbReportService {
     Resources.asByteSource(url).copyTo(Files.asByteSink(file));
 
     System.out.println("done.");
-    String fileName = file.toString();
-    try {
-      List<DashboardHb> beans = new CsvToBeanBuilder(new FileReader(fileName))
-        .withType(DashboardHb.class)
-        .withSkipLines(1)
-        .build()
-        .parse();
+//    String fileName = file.toString();
 
-      for (DashboardHb obj : beans) {
-        System.out.println(obj.toString());
-        try {
-//          DashboardHbReport report = new DashboardHbReport();
-//          report.setDimensionDate(obj.getDate());
-//          Example<DashboardHbReport> example = Example.of(report);
-//          Optional<DashboardHbReport> optional = dashboardHbReportRepository.findOne(example);
-//
-//          if(!optional.isPresent()) {
-//
-//          }
-
-          DashboardHbReport dashboardHbReport = new DashboardHbReport();
-          dashboardHbReport.setParentId(parentId);
-          dashboardHbReport.setDate(obj.getDate());
-          dashboardHbReport.setAdvertiserName(obj.getAdvertiserName());
-          dashboardHbReport.setDeviceName(obj.getDeviceName());
-          dashboardHbReport.setAdUnitName(obj.getAdUnitName());
-          dashboardHbReport.setAdUnitId(obj.getAdUnitId());
-          dashboardHbReport.setAdserverImpressions(obj.getImpression());
-          dashboardHbReport.setAdserverECPM(obj.getAverageECPM());
-          dashboardHbReport.setAdserverClicks(obj.getClick());
-          dashboardHbReport.setAdserverCtr(obj.getCtr());
-          dashboardHbReport.setAdserverRevenue(obj.getRevenue());
-          dashboardHbReport.setAdserverEligibleImpressions(obj.getEligibleImpressions());
-          dashboardHbReport.setAdserverMeasurableImpressions(obj.getMeasurableImpressions());
-          dashboardHbReport.setAdserverViewableImpressions(obj.getViewableImpressions());
-          dashboardHbReportRepository.save(dashboardHbReport);
-
-        } catch (Exception e) {
-          System.out.println("Error in data save");
-          System.out.println("e = " + e);
-          e.printStackTrace();
-        }
-      }
-
-    } catch (IOException e) {
-      System.err.printf("Request failed unexpectedly due to IOException: %s%n", e);
-    }
   }
 
   public void save(String pid, String type) {

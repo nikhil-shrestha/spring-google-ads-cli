@@ -62,14 +62,15 @@ public class GeoHbReportService {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
-    List<String> order = new ArrayList<>();
-    order.add("2813565031");
-    order.add("2813507675");
-    order.add("2813458214");
-    order.add("2813646901");
-    order.add("2813487542");
-    order.add("2813643757");
-    order.add("2813643757");
+    String[] order = {
+      "2813565031",
+      "2813507675",
+      "2813458214",
+      "2813646901",
+      "2813487542",
+      "2813643757",
+      "2813643757"
+    };
     String orderIds = String.join(",", order);
 
     // Create statement
