@@ -21,6 +21,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileReader;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
+@Service
 public class AdUnitAllReportService {
   private static final Logger logger = LoggerFactory.getLogger(GeoAllReportService.class);
 
@@ -148,7 +150,7 @@ public class AdUnitAllReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-all-report-", ".csv");
+    File file = File.createTempFile("adunit-all-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 

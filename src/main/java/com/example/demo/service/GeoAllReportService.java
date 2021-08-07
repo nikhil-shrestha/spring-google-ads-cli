@@ -126,7 +126,7 @@ public class GeoAllReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-all-report-", ".csv");
+    File file = File.createTempFile("geo-all-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 

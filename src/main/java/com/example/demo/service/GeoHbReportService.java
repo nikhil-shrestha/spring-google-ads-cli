@@ -137,7 +137,7 @@ public class GeoHbReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-hb-report-", ".csv");
+    File file = File.createTempFile("geo-hb-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 

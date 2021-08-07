@@ -136,7 +136,7 @@ public class GeoAdxReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-adx-report-", ".csv");
+    File file = File.createTempFile("geo-adx-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 
