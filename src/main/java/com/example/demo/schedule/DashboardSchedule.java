@@ -1,8 +1,6 @@
 package com.example.demo.schedule;
 
-import com.example.demo.service.DashboardAdxReportService;
-import com.example.demo.service.DashboardHbReportService;
-import com.example.demo.service.DashboardReportService;
+import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,6 +13,18 @@ public class DashboardSchedule {
   private DashboardAdxReportService adxReportService;
   @Autowired
   private DashboardReportService allReportService;
+  @Autowired
+  private GeoAllReportService geoAllReportService;
+  @Autowired
+  private GeoAdxReportService geoAdxReportService;
+  @Autowired
+  private GeoHbReportService geoHbReportService;
+  @Autowired
+  private AdUnitReportService adUnitReportService;
+  @Autowired
+  private AdUnitAdxReportService adUnitAdxReportService;
+  @Autowired
+  private AdUnitHbReportService adUnitHbReportService;
 
   @Scheduled(cron = "0 0 1 * * ?")
   public void scheduleTask() throws Exception {
@@ -43,6 +53,36 @@ public class DashboardSchedule {
 
     for (String parentId : parentIds) {
       hbReportService.save(parentId, "cron");
+      Thread.sleep(5000);
+    }
+
+    for (String parentId : parentIds) {
+      geoAllReportService.save(parentId, "cron");
+      Thread.sleep(5000);
+    }
+
+    for (String parentId : parentIds) {
+      geoAdxReportService.save(parentId, "cron");
+      Thread.sleep(5000);
+    }
+
+    for (String parentId : parentIds) {
+      geoHbReportService.save(parentId, "cron");
+      Thread.sleep(5000);
+    }
+
+    for (String parentId : parentIds) {
+      adUnitReportService.save(parentId, "cron");
+      Thread.sleep(5000);
+    }
+
+    for (String parentId : parentIds) {
+      adUnitAdxReportService.save(parentId, "cron");
+      Thread.sleep(5000);
+    }
+
+    for (String parentId : parentIds) {
+      adUnitHbReportService.save(parentId, "cron");
       Thread.sleep(5000);
     }
 
