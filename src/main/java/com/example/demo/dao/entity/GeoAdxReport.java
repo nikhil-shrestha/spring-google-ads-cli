@@ -32,9 +32,6 @@ public class GeoAdxReport implements Serializable {
   @Column(name = "advertiser_name")
   private String advertiserName;
 
-  @Column(name = "device_name")
-  private String deviceName;
-
   @Column(name = "ad_unit_name")
   private String adUnitName;
 
@@ -118,14 +115,6 @@ public class GeoAdxReport implements Serializable {
 
   public void setAdvertiserName(String advertiserName) {
     this.advertiserName = advertiserName;
-  }
-
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  public void setDeviceName(String deviceName) {
-    this.deviceName = deviceName;
   }
 
   public String getAdUnitName() {
@@ -297,7 +286,6 @@ public class GeoAdxReport implements Serializable {
       ", parentId=" + parentId +
       ", date=" + date +
       ", advertiserName='" + advertiserName + '\'' +
-      ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +
       ", adxImpressions=" + adxImpressions +

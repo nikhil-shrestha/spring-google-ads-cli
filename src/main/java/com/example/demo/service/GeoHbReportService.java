@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-  import com.example.demo.csv.geo.GeoHb;
+  import com.example.demo.csv.GeoHb;
   import com.example.demo.dao.entity.GeoHbReport;
   import com.example.demo.dao.repository.GeoHbReportRepository;
   import com.example.demo.utils.CustomDate;
@@ -163,7 +163,6 @@ public class GeoHbReportService {
           geoHbReport.setParentId(parentId);
           geoHbReport.setDate(obj.getDate());
           geoHbReport.setAdvertiserName(obj.getAdvertiserName());
-          geoHbReport.setDeviceName(obj.getDeviceName());
           geoHbReport.setAdUnitName(obj.getAdUnitName());
           geoHbReport.setAdUnitId(obj.getAdUnitId());
           geoHbReport.setAdserverImpressions(obj.getImpression());

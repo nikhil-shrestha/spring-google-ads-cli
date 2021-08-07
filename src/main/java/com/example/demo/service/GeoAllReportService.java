@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.csv.geo.GeoAll;
+import com.example.demo.csv.GeoAll;
 import com.example.demo.dao.entity.GeoReport;
 import com.example.demo.dao.repository.GeoAllReportRepository;
 import com.example.demo.utils.CustomDate;
@@ -161,7 +161,6 @@ public class GeoAllReportService {
           geoAllReport.setParentId(parentId);
           geoAllReport.setDate(obj.getDate());
           geoAllReport.setAdvertiserName(obj.getAdvertiserName());
-          geoAllReport.setDeviceName(obj.getDeviceName());
           geoAllReport.setAdUnitName(obj.getAdUnitName());
           geoAllReport.setCountryName(obj.getCountryName());
           geoAllReport.setCountryCriteriaID(obj.getCountryCriteriaID());

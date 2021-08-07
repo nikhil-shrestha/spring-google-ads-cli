@@ -1,4 +1,4 @@
-package com.example.demo.csv.geo;
+package com.example.demo.csv;
 
 import com.opencsv.bean.CsvBindByPosition;
 
@@ -8,9 +8,6 @@ public class GeoAdx {
 
   @CsvBindByPosition(position = 1)
   private String advertiserName;
-
-  @CsvBindByPosition(position = 2)
-  private String deviceName;
 
   @CsvBindByPosition(position = 3)
   private String adUnitName;
@@ -62,10 +59,6 @@ public class GeoAdx {
 
   public String getAdvertiserName() {
     return advertiserName;
-  }
-
-  public String getDeviceName() {
-    return deviceName;
   }
 
   public String getAdUnitName() {
@@ -129,7 +122,6 @@ public class GeoAdx {
     return "GeoAdxReport{" +
       "date='" + date + '\'' +
       ", advertiserName='" + advertiserName + '\'' +
-      ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId='" + adUnitId + '\'' +
       ", impression='" + impression + '\'' +

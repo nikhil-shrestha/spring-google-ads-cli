@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-  import com.example.demo.csv.geo.GeoAdx;
+  import com.example.demo.csv.GeoAdx;
   import com.example.demo.dao.entity.GeoAdxReport;
   import com.example.demo.dao.repository.GeoAdxReportRepository;
   import com.example.demo.utils.CustomDate;
@@ -166,7 +166,6 @@ public class GeoAdxReportService {
           geoAdxReport.setDate(obj.getDate());
           geoAdxReport.setAdxImpressions(obj.getImpression());
           geoAdxReport.setAdvertiserName(obj.getAdvertiserName());
-          geoAdxReport.setDeviceName(obj.getDeviceName());
           geoAdxReport.setAdUnitId(obj.getAdUnitId());
           geoAdxReport.setAdUnitName(obj.getAdUnitName());
 

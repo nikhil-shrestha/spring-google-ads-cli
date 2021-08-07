@@ -1,17 +1,13 @@
-package com.example.demo.csv.geo;
-
+package com.example.demo.csv;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-public class GeoAll {
+public class GeoHb {
   @CsvBindByPosition(position = 0)
   private String date;
 
   @CsvBindByPosition(position = 1)
   private String advertiserName;
-
-  @CsvBindByPosition(position = 2)
-  private String deviceName;
 
   @CsvBindByPosition(position = 3)
   private String adUnitName;
@@ -19,32 +15,37 @@ public class GeoAll {
   @CsvBindByPosition(position = 4)
   private String countryName;
 
+
   @CsvBindByPosition(position = 7)
   private String adUnitId;
+
 
   @CsvBindByPosition(position = 8)
   private String countryCriteriaID;
 
   @CsvBindByPosition(position = 9)
-  private String unfilledImpression;
-
-  @CsvBindByPosition(position = 10)
   private String impression;
 
+  @CsvBindByPosition(position = 10)
+  private String click;
+
   @CsvBindByPosition(position = 11)
-  private String lineItemClicks;
+  private String ctr;
 
   @CsvBindByPosition(position = 12)
-  private String cpmRevenue;
+  private String averageECPM;
 
   @CsvBindByPosition(position = 13)
-  private String adRequest;
+  private String revenue;
 
   @CsvBindByPosition(position = 14)
-  private String responseServed;
+  private String eligibleImpressions;
 
   @CsvBindByPosition(position = 15)
-  private String fillRate;
+  private String measurableImpressions;
+
+  @CsvBindByPosition(position = 16)
+  private String viewableImpressions;
 
 
   public String getDate() {
@@ -55,10 +56,6 @@ public class GeoAll {
     return advertiserName;
   }
 
-  public String getDeviceName() {
-    return deviceName;
-  }
-
   public String getAdUnitName() {
     return adUnitName;
   }
@@ -67,61 +64,63 @@ public class GeoAll {
     return adUnitId;
   }
 
-  public String getUnfilledImpression() {
-    return unfilledImpression;
-  }
-
   public String getImpression() {
     return impression;
   }
 
-  public String getLineItemClicks() {
-    return lineItemClicks;
+  public String getClick() {
+    return click;
   }
 
-  public String getCpmRevenue() {
-    return cpmRevenue;
+  public String getCtr() {
+    return ctr;
   }
 
-  public String getAdRequest() {
-    return adRequest;
+  public String getRevenue() {
+    return revenue;
   }
 
-  public String getResponseServed() {
-    return responseServed;
+  public String getAverageECPM() {
+    return averageECPM;
   }
 
-  public String getFillRate() {
-    return fillRate;
+  public String getEligibleImpressions() {
+    return eligibleImpressions;
   }
 
-  public String getCountryCriteriaID() {
-    return countryCriteriaID;
+  public String getMeasurableImpressions() {
+    return measurableImpressions;
+  }
+
+  public String getViewableImpressions() {
+    return viewableImpressions;
   }
 
   public String getCountryName() {
     return countryName;
   }
 
+  public String getCountryCriteriaID() {
+    return countryCriteriaID;
+  }
 
   @Override
   public String toString() {
-    return "GeoAll{" +
+    return "GeoHbReport{" +
       "date='" + date + '\'' +
       ", advertiserName='" + advertiserName + '\'' +
-      ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
-      ", countryName='" + countryName + '\'' +
       ", adUnitId='" + adUnitId + '\'' +
-      ", countryCriteriaID='" + countryCriteriaID + '\'' +
-      ", unfilledImpression='" + unfilledImpression + '\'' +
       ", impression='" + impression + '\'' +
-      ", lineItemClicks='" + lineItemClicks + '\'' +
-      ", cpmRevenue='" + cpmRevenue + '\'' +
-      ", adRequest='" + adRequest + '\'' +
-      ", responseServed='" + responseServed + '\'' +
-      ", fillRate='" + fillRate + '\'' +
+      ", click='" + click + '\'' +
+      ", ctr='" + ctr + '\'' +
+      ", averageECPM='" + averageECPM + '\'' +
+      ", revenue='" + revenue + '\'' +
+      ", eligibleImpressions='" + eligibleImpressions + '\'' +
+      ", measurableImpressions='" + measurableImpressions + '\'' +
+      ", viewableImpressions='" + viewableImpressions + '\'' +
+      ", countryName='" + countryName + '\'' +
+      ", countryCriteriaID='" + countryCriteriaID + '\'' +
       '}';
   }
 }
-

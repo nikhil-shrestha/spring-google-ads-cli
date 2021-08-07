@@ -33,9 +33,6 @@ public class GeoHbReport implements Serializable {
   @Column(name = "advertiser_name")
   private String advertiserName;
 
-  @Column(name = "device_name")
-  private String deviceName;
-
   @Column(name = "ad_unit_name")
   private String adUnitName;
 
@@ -110,14 +107,6 @@ public class GeoHbReport implements Serializable {
 
   public void setAdvertiserName(String advertiserName) {
     this.advertiserName = advertiserName;
-  }
-
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  public void setDeviceName(String deviceName) {
-    this.deviceName = deviceName;
   }
 
   public String getAdUnitName() {
@@ -263,7 +252,6 @@ public class GeoHbReport implements Serializable {
       ", parentId=" + parentId +
       ", date=" + date +
       ", advertiserName='" + advertiserName + '\'' +
-      ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +
       ", adserverImpressions=" + adserverImpressions +

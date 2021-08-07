@@ -32,9 +32,6 @@ public class GeoReport implements Serializable {
   @Column(name = "advertiser_name")
   private String advertiserName;
 
-  @Column(name = "device_name")
-  private String deviceName;
-
   @Column(name = "adUnit_name")
   private String adUnitName;
 
@@ -107,14 +104,6 @@ public class GeoReport implements Serializable {
 
   public void setAdvertiserName(String advertiserName) {
     this.advertiserName = advertiserName;
-  }
-
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  public void setDeviceName(String deviceName) {
-    this.deviceName = deviceName;
   }
 
   public String getAdUnitName() {
@@ -249,7 +238,6 @@ public class GeoReport implements Serializable {
       ", parentId=" + parentId +
       ", date=" + date +
       ", advertiserName='" + advertiserName + '\'' +
-      ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +
       ", totalUnfilledImpressions=" + totalUnfilledImpressions +
