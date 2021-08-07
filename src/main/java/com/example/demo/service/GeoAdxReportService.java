@@ -1,46 +1,49 @@
-package com.example.demo.service.geo;
+package com.example.demo.service;
 
-import com.example.demo.csv.geo.GeoAll;
-import com.example.demo.dao.entity.geo.GeoAllReport;
-import com.example.demo.dao.repository.geo.GeoAllReportRepository;
-import com.example.demo.utils.CustomDate;
-import com.google.api.ads.admanager.axis.factory.AdManagerServices;
-import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
-import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
-import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
-import com.google.api.ads.admanager.axis.v202105.*;
-import com.google.api.ads.admanager.lib.client.AdManagerSession;
-import com.google.api.ads.common.lib.auth.OfflineCredentials;
-import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
-import com.google.api.ads.common.lib.exception.OAuthException;
-import com.google.api.ads.common.lib.exception.ValidationException;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
-import com.opencsv.bean.CsvToBeanBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+  import com.example.demo.csv.geo.GeoAdx;
+  import com.example.demo.dao.entity.GeoAdxReport;
+  import com.example.demo.dao.repository.GeoAdxReportRepository;
+  import com.example.demo.utils.CustomDate;
+  import com.google.api.ads.admanager.axis.factory.AdManagerServices;
+  import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
+  import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
+  import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
+  import com.google.api.ads.admanager.axis.v202105.*;
+  import com.google.api.ads.admanager.lib.client.AdManagerSession;
+  import com.google.api.ads.common.lib.auth.OfflineCredentials;
+  import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
+  import com.google.api.ads.common.lib.exception.OAuthException;
+  import com.google.api.ads.common.lib.exception.ValidationException;
+  import com.google.api.client.auth.oauth2.Credential;
+  import com.google.common.io.Files;
+  import com.google.common.io.Resources;
+  import com.opencsv.bean.CsvToBeanBuilder;
+  import org.slf4j.Logger;
+  import org.slf4j.LoggerFactory;
+  import org.springframework.beans.factory.annotation.Autowired;
+  import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+  import java.io.File;
+  import java.io.FileReader;
+  import java.io.IOException;
+  import java.net.URL;
+  import java.rmi.RemoteException;
+  import java.text.DateFormat;
+  import java.text.SimpleDateFormat;
+  import java.util.*;
 
-import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
+  import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 @Service
-public class GeoAllReportService {
-  private static final Logger logger = LoggerFactory.getLogger(GeoAllReportService.class);
+public class GeoAdxReportService {
 
-  private GeoAllReportRepository geoAllReportRepository;
+  private static final Logger logger = LoggerFactory.getLogger(GeoAdxReportService.class);
+
+  @Autowired
+  private GeoAdxReportRepository geoAdxReportRepository;
 
   public long getCount() {
-    return geoAllReportRepository.count();
+    return geoAdxReportRepository.count();
   }
 
   /**
@@ -60,10 +63,17 @@ public class GeoAllReportService {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
+    List<String> order = new ArrayList<>();
+    order.add("2678679591");
+    order.add("2715078140");
+    order.add("2766086578");
+    order.add("2809403236");
+    String orderIds = String.join(",", order);
+
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("PARENT_AD_UNIT_ID = :id")
+        .where("ORDER_ID IN (" + orderIds + ") AND PARENT_AD_UNIT_ID = :id")
         .withBindVariableValue("id", parentId)
         .removeLimitAndOffset();
 
@@ -72,13 +82,16 @@ public class GeoAllReportService {
     reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME, Dimension.COUNTRY_NAME});
     reportQuery.setColumns(
       new Column[]{
-        Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CLICKS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CPM_AND_CPC_REVENUE,
-        Column.TOTAL_AD_REQUESTS,
-        Column.TOTAL_RESPONSES_SERVED,
-        Column.TOTAL_FILL_RATE
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_IMPRESSIONS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CLICKS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CTR,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_REVENUE,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_AVERAGE_ECPM,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_RESPONSES_SERVED,
+        Column.ADSENSE_RESPONSES_SERVED
       });
 
     // Set the filter statement.
@@ -103,7 +116,6 @@ public class GeoAllReportService {
     };
     reportQuery.setCustomDimensionKeyIds(id);
 
-
     // Create report job.
     ReportJob reportJob = new ReportJob();
     reportJob.setReportQuery(reportQuery);
@@ -118,7 +130,7 @@ public class GeoAllReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-all-report-", ".csv");
+    File file = File.createTempFile("dashboard-adx-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 
@@ -132,56 +144,45 @@ public class GeoAllReportService {
     System.out.println("done.");
     String fileName = file.toString();
     try {
-      List<GeoAll> beans = new CsvToBeanBuilder(new FileReader(fileName))
-        .withType(GeoAll.class)
+      List<GeoAdx> beans = new CsvToBeanBuilder(new FileReader(fileName))
+        .withType(GeoAdx.class)
         .withSkipLines(1)
         .build()
         .parse();
 
-      for (GeoAll obj : beans) {
+      for (GeoAdx obj : beans) {
         System.out.println(obj.toString());
         try {
-//          DashboardReport report = new DashboardReport();
+//          DashboardAdxReport report = new DashboardAdxReport();
 //          report.setDimensionDate(obj.getDate());
-//          Example<DashboardReport> example = Example.of(report);
-//          Optional<DashboardReport> optional = geoReporRepository.findOne(example);
+//          Example<DashboardAdxReport> example = Example.of(report);
+//          Optional<DashboardAdxReport> optional = dashboardAdxReportRepository.findOne(example);
 //
 //          if(!optional.isPresent()) {
 //
 //          }
 
-          GeoAllReport geoAllReport = new GeoAllReport();
-          geoAllReport.setParentId(parentId);
-          System.out.println("1");
-          geoAllReport.setDate(obj.getDate());
-          System.out.println("2");
-          geoAllReport.setAdvertiserName(obj.getAdvertiserName());
-          System.out.println("3");
-          geoAllReport.setDeviceName(obj.getDeviceName());
-          System.out.println("4");
-          geoAllReport.setAdUnitName(obj.getAdUnitName());
-          System.out.println("5");
-          geoAllReport.setCountryName(obj.getCountryName());
-          System.out.println("6");
-          geoAllReport.setCountryCriteriaID(obj.getCountryCriteriaID());
-          System.out.println("7");
-          geoAllReport.setAdUnitId(obj.getAdUnitId());
-          System.out.println("8");
-          geoAllReport.setTotalUnfilledImpressions(obj.getUnfilledImpression());
-          System.out.println("9");
-          geoAllReport.setTotalImpressions(obj.getImpression());
-          System.out.println("10");
-          geoAllReport.setTotalItemClicks(obj.getLineItemClicks());
-          System.out.println("11");
-          geoAllReport.setTotalRevenue(obj.getCpmRevenue());
-          System.out.println("12");
-          geoAllReport.setTotalAdRequest(obj.getAdRequest());
-          System.out.println("13");
-          geoAllReport.setTotalResponseServed(obj.getResponseServed());
-          System.out.println("14");
-          geoAllReport.setTotalFillRate(obj.getFillRate());
-          System.out.println("15");
-          geoAllReportRepository.save(geoAllReport);
+          GeoAdxReport geoAdxReport = new GeoAdxReport();
+          geoAdxReport.setParentId(parentId);
+          geoAdxReport.setDate(obj.getDate());
+          geoAdxReport.setAdxImpressions(obj.getImpression());
+          geoAdxReport.setAdvertiserName(obj.getAdvertiserName());
+          geoAdxReport.setDeviceName(obj.getDeviceName());
+          geoAdxReport.setAdUnitId(obj.getAdUnitId());
+          geoAdxReport.setAdUnitName(obj.getAdUnitName());
+
+          geoAdxReport.setAdxECPM(obj.getAverageECPM());
+          geoAdxReport.setAdxItemClicks(obj.getClick());
+          geoAdxReport.setAdxItemCtr(obj.getCtr());
+          geoAdxReport.setAdxRevenue(obj.getRevenue());
+          geoAdxReport.setAdxResponseServe(obj.getAdExchangeResponseServed());
+          geoAdxReport.setAdxEligibleImpressions(obj.getEligibleImpressions());
+          geoAdxReport.setAdxMeasurableImpressions(obj.getMeasurableImpressions());
+          geoAdxReport.setAdxViewableImpressions(obj.getViewableImpressions());
+          geoAdxReport.setCountryName(obj.getCountryName());
+          geoAdxReport.setCountryCriteriaID(obj.getCountryCriteriaID());
+          geoAdxReport.setAdsenseResponsesServed(obj.getProgrammaticResponsesServed());
+          geoAdxReportRepository.save(geoAdxReport);
 
         } catch (Exception e) {
           System.out.println("Error in data save");
@@ -283,3 +284,4 @@ public class GeoAllReportService {
     return;
   }
 }
+

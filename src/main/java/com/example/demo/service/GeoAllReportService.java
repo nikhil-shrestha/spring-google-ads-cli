@@ -1,53 +1,48 @@
-package com.example.demo.service.geo;
+package com.example.demo.service;
 
-  import com.example.demo.csv.DashboardHb;
-  import com.example.demo.csv.geo.GeoHb;
-  import com.example.demo.dao.entity.DashboardHbReport;
-  import com.example.demo.dao.entity.geo.GeoHbReport;
-  import com.example.demo.dao.repository.DashboardHbReportRepository;
-  import com.example.demo.dao.repository.geo.GeoHbReportRepository;
-  import com.example.demo.utils.CustomDate;
-  import com.google.api.ads.admanager.axis.factory.AdManagerServices;
-  import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
-  import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
-  import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
-  import com.google.api.ads.admanager.axis.v202105.*;
-  import com.google.api.ads.admanager.lib.client.AdManagerSession;
-  import com.google.api.ads.common.lib.auth.OfflineCredentials;
-  import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
-  import com.google.api.ads.common.lib.exception.OAuthException;
-  import com.google.api.ads.common.lib.exception.ValidationException;
-  import com.google.api.client.auth.oauth2.Credential;
-  import com.google.common.io.Files;
-  import com.google.common.io.Resources;
-  import com.opencsv.bean.CsvToBeanBuilder;
-  import org.slf4j.Logger;
-  import org.slf4j.LoggerFactory;
-  import org.springframework.beans.factory.annotation.Autowired;
-  import org.springframework.scheduling.annotation.Async;
-  import org.springframework.stereotype.Service;
+import com.example.demo.csv.geo.GeoAll;
+import com.example.demo.dao.entity.GeoReport;
+import com.example.demo.dao.repository.GeoAllReportRepository;
+import com.example.demo.utils.CustomDate;
+import com.google.api.ads.admanager.axis.factory.AdManagerServices;
+import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
+import com.google.api.ads.admanager.axis.utils.v202105.ReportDownloader;
+import com.google.api.ads.admanager.axis.utils.v202105.StatementBuilder;
+import com.google.api.ads.admanager.axis.v202105.*;
+import com.google.api.ads.admanager.lib.client.AdManagerSession;
+import com.google.api.ads.common.lib.auth.OfflineCredentials;
+import com.google.api.ads.common.lib.conf.ConfigurationLoadException;
+import com.google.api.ads.common.lib.exception.OAuthException;
+import com.google.api.ads.common.lib.exception.ValidationException;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.common.io.Files;
+import com.google.common.io.Resources;
+import com.opencsv.bean.CsvToBeanBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-  import java.io.File;
-  import java.io.FileReader;
-  import java.io.IOException;
-  import java.net.URL;
-  import java.rmi.RemoteException;
-  import java.text.DateFormat;
-  import java.text.SimpleDateFormat;
-  import java.util.*;
-  import java.util.concurrent.CompletableFuture;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-  import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
+import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_FILENAME;
 
 @Service
-public class GeoHbReportService {
-  private static final Logger logger = LoggerFactory.getLogger(GeoHbReportService.class);
+public class GeoAllReportService {
+  private static final Logger logger = LoggerFactory.getLogger(GeoAllReportService.class);
 
   @Autowired
-  private GeoHbReportRepository geoHbReportRepository;
+  private GeoAllReportRepository geoAllReportRepository;
 
   public long getCount() {
-    return geoHbReportRepository.count();
+    return geoAllReportRepository.count();
   }
 
   /**
@@ -67,20 +62,10 @@ public class GeoHbReportService {
     ReportServiceInterface reportService =
       adManagerServices.get(session, ReportServiceInterface.class);
 
-    List<String> order = new ArrayList<>();
-    order.add("2813565031");
-    order.add("2813507675");
-    order.add("2813458214");
-    order.add("2813646901");
-    order.add("2813487542");
-    order.add("2813643757");
-    order.add("2813643757");
-    String orderIds = String.join(",", order);
-
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("ORDER_ID IN (" + orderIds + ") AND PARENT_AD_UNIT_ID = :id")
+        .where("PARENT_AD_UNIT_ID = :id")
         .withBindVariableValue("id", parentId)
         .removeLimitAndOffset();
 
@@ -89,14 +74,13 @@ public class GeoHbReportService {
     reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME, Dimension.COUNTRY_NAME});
     reportQuery.setColumns(
       new Column[]{
-        Column.AD_SERVER_IMPRESSIONS,
-        Column.AD_SERVER_CLICKS,
-        Column.AD_SERVER_CTR,
-        Column.AD_SERVER_WITHOUT_CPD_AVERAGE_ECPM,
-        Column.AD_SERVER_CPM_AND_CPC_REVENUE,
-        Column.AD_SERVER_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
-        Column.AD_SERVER_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
-        Column.AD_SERVER_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
+        Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
+        Column.TOTAL_LINE_ITEM_LEVEL_IMPRESSIONS,
+        Column.TOTAL_LINE_ITEM_LEVEL_CLICKS,
+        Column.TOTAL_LINE_ITEM_LEVEL_CPM_AND_CPC_REVENUE,
+        Column.TOTAL_AD_REQUESTS,
+        Column.TOTAL_RESPONSES_SERVED,
+        Column.TOTAL_FILL_RATE
       });
 
     // Set the filter statement.
@@ -136,7 +120,7 @@ public class GeoHbReportService {
     reportDownloader.waitForReportReady();
 
     // Change to your file location.
-    File file = File.createTempFile("dashboard-hb-report-", ".csv");
+    File file = File.createTempFile("dashboard-all-report-", ".csv");
 
     System.out.printf("Downloading report to %s ...", file.toString());
 
@@ -150,46 +134,45 @@ public class GeoHbReportService {
     System.out.println("done.");
     String fileName = file.toString();
     try {
-      List<GeoHb> beans = new CsvToBeanBuilder(new FileReader(fileName))
-        .withType(GeoHb.class)
+      List<GeoAll> beans = new CsvToBeanBuilder(new FileReader(fileName))
+        .withType(GeoAll.class)
         .withSkipLines(1)
         .build()
         .parse();
 
-      for (GeoHb obj : beans) {
-        System.out.println(obj.toString());
+      for (GeoAll obj : beans) {
         try {
-//          DashboardHbReport report = new DashboardHbReport();
+//          DashboardReport report = new DashboardReport();
 //          report.setDimensionDate(obj.getDate());
-//          Example<DashboardHbReport> example = Example.of(report);
-//          Optional<DashboardHbReport> optional = dashboardHbReportRepository.findOne(example);
+//          Example<DashboardReport> example = Example.of(report);
+//          Optional<DashboardReport> optional = geoReporRepository.findOne(example);
 //
 //          if(!optional.isPresent()) {
 //
 //          }
 
-          GeoHbReport geoHbReport = new GeoHbReport();
-          geoHbReport.setParentId(parentId);
-          geoHbReport.setDate(obj.getDate());
-          geoHbReport.setAdvertiserName(obj.getAdvertiserName());
-          geoHbReport.setDeviceName(obj.getDeviceName());
-          geoHbReport.setAdUnitName(obj.getAdUnitName());
-          geoHbReport.setAdUnitId(obj.getAdUnitId());
-          geoHbReport.setAdserverImpressions(obj.getImpression());
-          geoHbReport.setAdserverECPM(obj.getAverageECPM());
-          geoHbReport.setAdserverClicks(obj.getClick());
-          geoHbReport.setAdserverCtr(obj.getCtr());
-          geoHbReport.setAdserverRevenue(obj.getRevenue());
-          geoHbReport.setAdserverEligibleImpressions(obj.getEligibleImpressions());
-          geoHbReport.setAdserverMeasurableImpressions(obj.getMeasurableImpressions());
-          geoHbReport.setAdserverViewableImpressions(obj.getViewableImpressions());
-          geoHbReport.setCountryName(obj.getCountryName());
-          geoHbReport.setCountryCriteriaID(obj.getCountryCriteriaID());
-          geoHbReportRepository.save(geoHbReport);
+          GeoReport geoAllReport = new GeoReport();
+          geoAllReport.setParentId(parentId);
+          geoAllReport.setDate(obj.getDate());
+          geoAllReport.setAdvertiserName(obj.getAdvertiserName());
+          geoAllReport.setDeviceName(obj.getDeviceName());
+          geoAllReport.setAdUnitName(obj.getAdUnitName());
+          geoAllReport.setCountryName(obj.getCountryName());
+          geoAllReport.setCountryCriteriaID(obj.getCountryCriteriaID());
+          geoAllReport.setAdUnitId(obj.getAdUnitId());
+          geoAllReport.setTotalUnfilledImpressions(obj.getUnfilledImpression());
+          geoAllReport.setTotalImpressions(obj.getImpression());
+          geoAllReport.setTotalItemClicks(obj.getLineItemClicks());
+          geoAllReport.setTotalRevenue(obj.getCpmRevenue());
+          geoAllReport.setTotalAdRequest(obj.getAdRequest());
+          geoAllReport.setTotalResponseServed(obj.getResponseServed());
+          geoAllReport.setTotalFillRate(obj.getFillRate());
+          System.out.println(geoAllReport.toString());
+
+          geoAllReportRepository.save(geoAllReport);
 
         } catch (Exception e) {
           System.out.println("Error in data save");
-          System.out.println("e = " + e);
           e.printStackTrace();
         }
       }

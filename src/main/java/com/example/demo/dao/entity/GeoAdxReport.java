@@ -1,21 +1,22 @@
-package com.example.demo.dao.entity.geo;
+package com.example.demo.dao.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(name = "GeoAdx")
 @Table(name = "geo_adx")
-public class GeoAdxReport {
+public class GeoAdxReport implements Serializable {
   @Id
   @SequenceGenerator(
-    name = "dashboard_adx_sequence",
-    sequenceName = "dashboard_adx_sequence",
+    name = "geo_adx_sequence",
+    sequenceName = "geo_adx_sequence",
     allocationSize = 1
   )
   @GeneratedValue(
     strategy = GenerationType.SEQUENCE,
-    generator = "dashboard_adx_sequence"
+    generator = "geo_adx_sequence"
   )
   @Column(
     name = "id",
@@ -76,7 +77,7 @@ public class GeoAdxReport {
   @Column(name = "country_name")
   private String countryName;
 
-  @Column(name = "country_criteria_ID")
+  @Column(name = "country_criteria_id")
   private Long countryCriteriaID;
 
   public GeoAdxReport() {

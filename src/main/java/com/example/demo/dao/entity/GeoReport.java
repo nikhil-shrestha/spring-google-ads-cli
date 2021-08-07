@@ -1,21 +1,22 @@
-package com.example.demo.dao.entity.geo;
+package com.example.demo.dao.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Entity(name = "GeoHb")
-@Table(name = "geo_hb")
-public class GeoHbReport {
+@Entity(name = "Geo")
+@Table(name = "geo")
+public class GeoReport implements Serializable {
   @Id
   @SequenceGenerator(
-    name = "dashboard_hb_sequence",
-    sequenceName = "dashboard_hb_sequence",
+    name = "geo_sequence",
+    sequenceName = "geo_sequence",
     allocationSize = 1
   )
   @GeneratedValue(
     strategy = GenerationType.SEQUENCE,
-    generator = "dashboard_hb_sequence"
+    generator = "geo_sequence"
   )
   @Column(
     name = "id",
@@ -23,7 +24,6 @@ public class GeoHbReport {
   )
   private Long id;
 
-  @Column(name = "parent_id")
   private Long parentId;
 
   @Column(name = "date")
@@ -35,43 +35,40 @@ public class GeoHbReport {
   @Column(name = "device_name")
   private String deviceName;
 
-  @Column(name = "ad_unit_name")
+  @Column(name = "adUnit_name")
   private String adUnitName;
-
-  @Column(name = "ad_unit_id")
-  private Long adUnitId;
-
-  @Column(name = "adserver_impressions")
-  private Double adserverImpressions;
-
-  @Column(name = "adserver_clicks")
-  private Double adserverClicks;
-
-  @Column(name = "adserver_ctr")
-  private Double adserverCtr;
-
-  @Column(name = "adserver_ecpm")
-  private Double adserverECPM;
-
-  @Column(name = "adserver_revenue")
-  private Double adserverRevenue;
-
-  @Column(name = "adserver_eligible_impressions")
-  private Double adserverEligibleImpressions;
-
-  @Column(name = "adserver_measurable_impressions")
-  private Double adserverMeasurableImpressions;
-
-  @Column(name = "adserver_viewable_impressions")
-  private Double adserverViewableImpressions;
 
   @Column(name = "country_name")
   private String countryName;
 
-  @Column(name = "country_criteria_ID")
+  @Column(name = "adUnit_id")
+  private Long adUnitId;
+
+  @Column(name = "country_criteria_id")
   private Long countryCriteriaID;
 
-  public GeoHbReport() {
+  @Column(name = "geo_total_unfilled_impressions")
+  private Double totalUnfilledImpressions;
+
+  @Column(name = "geo_total_impressions")
+  private Double totalImpressions;
+
+  @Column(name = "geo_total_item_clicks")
+  private Double totalItemClicks;
+
+  @Column(name = "geo_total_revenue")
+  private Double totalRevenue;
+
+  @Column(name = "geo_total_ad_request")
+  private Double totalAdRequest;
+
+  @Column(name = "geo_total_response_served")
+  private Double totalResponseServed;
+
+  @Column(name = "geo_total_fill_rate")
+  private Double totalFillRate;
+
+  public GeoReport() {
   }
 
   public Long getId() {
@@ -80,6 +77,7 @@ public class GeoHbReport {
 
   public void setId(Long id) {
     this.id = id;
+    System.out.println("this.id = " + this.id);
   }
 
   public Long getParentId() {
@@ -139,101 +137,90 @@ public class GeoHbReport {
     }
   }
 
-  public Double getAdserverImpressions() {
-    return adserverImpressions;
+  public Double getTotalUnfilledImpressions() {
+    return totalUnfilledImpressions;
   }
 
-  public void setAdserverImpressions(String impression) {
+  public void setTotalUnfilledImpressions(String totalUnfilledImpressions) {
     try {
-      this.adserverImpressions = Double.parseDouble(impression);
+      this.totalUnfilledImpressions = Double.parseDouble(totalUnfilledImpressions);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdserverClicks() {
-    return adserverClicks;
+  public Double getTotalImpressions() {
+    return totalImpressions;
   }
 
-  public void setAdserverClicks(String click) {
+  public void setTotalImpressions(String totalImpressions) {
     try {
-      this.adserverClicks = Double.parseDouble(click);
+      this.totalImpressions = Double.parseDouble(totalImpressions);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdserverCtr() {
-    return adserverCtr;
+  public Double getTotalItemClicks() {
+    return totalItemClicks;
   }
 
-  public void setAdserverCtr(String ctr) {
+  public void setTotalItemClicks(String totalItemClicks) {
     try {
-      this.adserverCtr = Double.parseDouble(ctr);
+      this.totalItemClicks = Double.parseDouble(totalItemClicks);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdserverECPM() {
-    return adserverECPM;
+  public Double getTotalRevenue() {
+    return totalRevenue;
   }
 
-  public void setAdserverECPM(String averageECPM) {
+  public void setTotalRevenue(String totalRevenue) {
     try {
-      this.adserverECPM = Double.parseDouble(averageECPM);
+      this.totalRevenue = Double.parseDouble(totalRevenue);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdserverRevenue() {
-    return adserverRevenue;
+  public Double getTotalAdRequest() {
+    return totalAdRequest;
   }
 
-  public void setAdserverRevenue(String revenue) {
+  public void setTotalAdRequest(String totalAdRequest) {
     try {
-      this.adserverRevenue = Double.parseDouble(revenue);
+      this.totalAdRequest = Double.parseDouble(totalAdRequest);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdserverEligibleImpressions() {
-    return adserverEligibleImpressions;
+  public Double getTotalResponseServed() {
+    return totalResponseServed;
   }
 
-  public void setAdserverEligibleImpressions(String eligibleImpressions) {
+  public void setTotalResponseServed(String totalResponseServed) {
     try {
-      this.adserverEligibleImpressions = Double.parseDouble(eligibleImpressions);
+      this.totalResponseServed = Double.parseDouble(totalResponseServed);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdserverMeasurableImpressions() {
-    return adserverMeasurableImpressions;
+  public Double getTotalFillRate() {
+    return totalFillRate;
   }
 
-  public void setAdserverMeasurableImpressions(String measurableImpressions) {
+  public void setTotalFillRate(String fillRate) {
     try {
-      this.adserverMeasurableImpressions = Double.parseDouble(measurableImpressions);
+      this.totalFillRate = Double.parseDouble(fillRate);
     } catch (NumberFormatException e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public Double getAdserverViewableImpressions() {
-    return adserverViewableImpressions;
-  }
-
-  public void setAdserverViewableImpressions(String viewableImpressions) {
-    try {
-      this.adserverViewableImpressions = Double.parseDouble(viewableImpressions);
-    } catch (NumberFormatException e) {
-      System.out.println(e.getMessage());
-    }
-  }
 
   public String getCountryName() {
     return countryName;
@@ -257,7 +244,7 @@ public class GeoHbReport {
 
   @Override
   public String toString() {
-    return "GeoHbReport{" +
+    return "GeoAllReport{" +
       "id=" + id +
       ", parentId=" + parentId +
       ", date=" + date +
@@ -265,14 +252,13 @@ public class GeoHbReport {
       ", deviceName='" + deviceName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId=" + adUnitId +
-      ", adserverImpressions=" + adserverImpressions +
-      ", adserverClicks=" + adserverClicks +
-      ", adserverCtr=" + adserverCtr +
-      ", adserverECPM=" + adserverECPM +
-      ", adserverRevenue=" + adserverRevenue +
-      ", adserverEligibleImpressions=" + adserverEligibleImpressions +
-      ", adserverMeasurableImpressions=" + adserverMeasurableImpressions +
-      ", adserverViewableImpressions=" + adserverViewableImpressions +
+      ", totalUnfilledImpressions=" + totalUnfilledImpressions +
+      ", totalImpressions=" + totalImpressions +
+      ", totalItemClicks=" + totalItemClicks +
+      ", totalRevenue=" + totalRevenue +
+      ", totalAdRequest=" + totalAdRequest +
+      ", totalResponseServed=" + totalResponseServed +
+      ", totalFillRate=" + totalFillRate +
       ", countryName='" + countryName + '\'' +
       ", countryCriteriaID=" + countryCriteriaID +
       '}';
