@@ -110,13 +110,16 @@ public class AdUnitAdxReportService {
     reportQuery.setAdUnitView(ReportQueryAdUnitView.FLAT);
     reportQuery.setColumns(
       new Column[]{
-        Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CLICKS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CPM_AND_CPC_REVENUE,
-        Column.TOTAL_AD_REQUESTS,
-        Column.TOTAL_RESPONSES_SERVED,
-        Column.TOTAL_FILL_RATE
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_IMPRESSIONS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CLICKS,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_CTR,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_REVENUE,
+        Column.AD_EXCHANGE_LINE_ITEM_LEVEL_AVERAGE_ECPM,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
+        Column.AD_EXCHANGE_RESPONSES_SERVED,
+        Column.ADSENSE_RESPONSES_SERVED
       });
 
     // Set the filter statement.

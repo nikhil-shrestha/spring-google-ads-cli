@@ -39,7 +39,6 @@ public class AdUnitHbReportService {
     InventoryServiceInterface inventoryService =
       adManagerServices.get(session, InventoryServiceInterface.class);
 
-
     // Create a statement to select ad units under the parent ad unit.
     StatementBuilder statementBuilder =
       new StatementBuilder()
@@ -50,7 +49,6 @@ public class AdUnitHbReportService {
     int totalResultSetSize = 0;
 
     ArrayList<String> ids = new ArrayList<>();
-
 
     AdUnitPage page = inventoryService.getAdUnitsByStatement(statementBuilder.toStatement());
     if (page.getResults() != null) {
@@ -113,13 +111,14 @@ public class AdUnitHbReportService {
     reportQuery.setAdUnitView(ReportQueryAdUnitView.FLAT);
     reportQuery.setColumns(
       new Column[]{
-        Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_IMPRESSIONS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CLICKS,
-        Column.TOTAL_LINE_ITEM_LEVEL_CPM_AND_CPC_REVENUE,
-        Column.TOTAL_AD_REQUESTS,
-        Column.TOTAL_RESPONSES_SERVED,
-        Column.TOTAL_FILL_RATE
+        Column.AD_SERVER_IMPRESSIONS,
+        Column.AD_SERVER_CLICKS,
+        Column.AD_SERVER_CTR,
+        Column.AD_SERVER_WITHOUT_CPD_AVERAGE_ECPM,
+        Column.AD_SERVER_CPM_AND_CPC_REVENUE,
+        Column.AD_SERVER_ACTIVE_VIEW_ELIGIBLE_IMPRESSIONS,
+        Column.AD_SERVER_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS,
+        Column.AD_SERVER_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS,
       });
 
     // Set the filter statement.
