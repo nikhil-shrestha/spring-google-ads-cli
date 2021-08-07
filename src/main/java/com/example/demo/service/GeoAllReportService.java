@@ -71,7 +71,13 @@ public class GeoAllReportService {
 
     // Create report query.
     ReportQuery reportQuery = new ReportQuery();
-    reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME, Dimension.COUNTRY_NAME});
+    reportQuery.setDimensions(
+      new Dimension[]{
+        Dimension.DATE,
+        Dimension.CUSTOM_DIMENSION,
+        Dimension.DEVICE_CATEGORY_NAME,
+        Dimension.AD_UNIT_NAME
+      });
     reportQuery.setColumns(
       new Column[]{
         Column.TOTAL_INVENTORY_LEVEL_UNFILLED_IMPRESSIONS,

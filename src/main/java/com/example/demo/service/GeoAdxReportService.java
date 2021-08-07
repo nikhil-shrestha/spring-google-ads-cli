@@ -79,7 +79,13 @@ public class GeoAdxReportService {
 
     // Create report query.
     ReportQuery reportQuery = new ReportQuery();
-    reportQuery.setDimensions(new Dimension[]{Dimension.DATE, Dimension.CUSTOM_DIMENSION, Dimension.DEVICE_CATEGORY_NAME, Dimension.AD_UNIT_NAME, Dimension.COUNTRY_NAME});
+    reportQuery.setDimensions(
+      new Dimension[]{
+        Dimension.DATE,
+        Dimension.CUSTOM_DIMENSION,
+        Dimension.DEVICE_CATEGORY_NAME,
+        Dimension.AD_UNIT_NAME
+      });
     reportQuery.setColumns(
       new Column[]{
         Column.AD_EXCHANGE_LINE_ITEM_LEVEL_IMPRESSIONS,
