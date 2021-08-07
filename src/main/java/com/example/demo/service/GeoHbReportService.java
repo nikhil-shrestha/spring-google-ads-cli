@@ -75,8 +75,8 @@ public class GeoHbReportService {
       new Dimension[]{
         Dimension.DATE,
         Dimension.CUSTOM_DIMENSION,
-        Dimension.DEVICE_CATEGORY_NAME,
-        Dimension.AD_UNIT_NAME
+        Dimension.AD_UNIT_NAME,
+        Dimension.COUNTRY_NAME
       });
     reportQuery.setColumns(
       new Column[]{
