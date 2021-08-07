@@ -85,18 +85,11 @@ public class AdUnitAdxReportService {
     List<String> listIds = getAdUnitIds(adManagerServices, session, parentId);
     String adUnitIds = String.join(",", listIds);
 
-    String[] order = {
-      "2678679591",
-      "2715078140",
-      "2766086578",
-      "2809403236"
-    };
-    String orderIds = String.join(",", order);
 
     // Create statement
     StatementBuilder statementBuilder =
       new StatementBuilder()
-        .where("AD_UNIT_ID IN (" + adUnitIds + ") AND ORDER_ID IN (" + orderIds + ")")
+        .where("AD_UNIT_ID IN (" + adUnitIds + ")")
         .removeLimitAndOffset();
 
     // Create report query.
