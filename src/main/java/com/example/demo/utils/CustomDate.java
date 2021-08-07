@@ -18,7 +18,7 @@ public class CustomDate {
 
   public static Date ninetyDays() {
     final Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DAY_OF_MONTH, -30);
+    cal.add(Calendar.DAY_OF_MONTH, -90);
     return cal.getTime();
   }
 }

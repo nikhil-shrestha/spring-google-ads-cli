@@ -100,9 +100,8 @@ public class DashboardReportService {
     } else {
       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
       String yesterdayDateString = dateFormat.format(CustomDate.yesterday());
-      String thirtyDaysDateString = dateFormat.format(CustomDate.ninetyDays());
+      String thirtyDaysDateString = dateFormat.format(CustomDate.thirtyDays());
 
-      // TODO: check default timezone (Google Adx TimeZone)
       reportQuery.setDateRangeType(DateRangeType.CUSTOM_DATE);
       reportQuery.setStartDate(DateTimes.toDateTime(thirtyDaysDateString + "T00:00:00", "America/New_York").getDate());
       reportQuery.setEndDate(DateTimes.toDateTime(yesterdayDateString + "T00:00:00", "America/New_York").getDate());
