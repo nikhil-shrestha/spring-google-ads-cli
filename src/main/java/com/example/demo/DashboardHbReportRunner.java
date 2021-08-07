@@ -23,19 +23,21 @@ public class DashboardHbReportRunner implements CommandLineRunner {
     if (count == 0) {
       String[] parentIds = {
         "21887933792",
-        "21915945038"
-//        "21876718147",
-//        "21876902145",
-//        "21875886579",
-//        "21897089670",
-//        "21887988623",
-//        "21887783590",
-//        "21876587060",
-//        "21876425862",
+        "21915945038",
+        "21876718147",
+        "21876902145",
+        "21875886579",
+        "21897089670",
+        "21887988623",
+        "21887783590",
+        "21876587060",
+        "21876425862",
       };
 
       for (String parentId : parentIds) {
         hbReportService.save(parentId, "runner");
+        System.out.println("DASHBOARD SAVED... ");
+        System.out.println("\n\n\n");
       }
     }
   }

@@ -9,46 +9,46 @@ public class GeoAdx {
   @CsvBindByPosition(position = 1)
   private String advertiserName;
 
-  @CsvBindByPosition(position = 3)
+  @CsvBindByPosition(position = 2)
   private String adUnitName;
 
-  @CsvBindByPosition(position = 4)
+  @CsvBindByPosition(position = 3)
   private String countryName;
 
-  @CsvBindByPosition(position = 7)
+  @CsvBindByPosition(position = 5)
   private String adUnitId;
 
-  @CsvBindByPosition(position = 8)
+  @CsvBindByPosition(position = 6)
   private String countryCriteriaID;
 
-  @CsvBindByPosition(position = 9)
+  @CsvBindByPosition(position = 7)
   private String impression;
 
-  @CsvBindByPosition(position = 10)
+  @CsvBindByPosition(position = 8)
   private String click;
 
-  @CsvBindByPosition(position = 11)
+  @CsvBindByPosition(position = 9)
   private String ctr;
 
-  @CsvBindByPosition(position = 12)
+  @CsvBindByPosition(position = 10)
   private String revenue;
 
-  @CsvBindByPosition(position = 13)
+  @CsvBindByPosition(position = 11)
   private String averageECPM;
 
-  @CsvBindByPosition(position = 14)
+  @CsvBindByPosition(position = 12)
   private String eligibleImpressions;
 
-  @CsvBindByPosition(position = 15)
+  @CsvBindByPosition(position = 13)
   private String measurableImpressions;
 
-  @CsvBindByPosition(position = 16)
+  @CsvBindByPosition(position = 14)
   private String viewableImpressions;
 
-  @CsvBindByPosition(position = 17)
+  @CsvBindByPosition(position = 15)
   private String adExchangeResponseServed;
 
-  @CsvBindByPosition(position = 18)
+  @CsvBindByPosition(position = 16)
   private String programmaticResponsesServed;
 
 

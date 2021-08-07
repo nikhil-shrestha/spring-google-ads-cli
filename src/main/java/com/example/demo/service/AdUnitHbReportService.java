@@ -1,5 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.csv.AdUnitHb;
+import com.example.demo.csv.GeoAdx;
+import com.example.demo.dao.entity.AdUnitHbReport;
+import com.example.demo.dao.repository.AdUnitHbReportRepository;
 import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
 import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
@@ -14,11 +18,14 @@ import com.google.api.ads.common.lib.exception.ValidationException;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -32,6 +39,13 @@ import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_
 @Service
 public class AdUnitHbReportService {
   private static final Logger logger = LoggerFactory.getLogger(AdUnitHbReportService.class);
+
+  @Autowired
+  private AdUnitHbReportRepository adUnitHbReportRepository;
+
+  public long getCount() {
+    return adUnitHbReportRepository.count();
+  }
 
   public static ArrayList<String> getAdUnitIds(AdManagerServices adManagerServices, AdManagerSession session, long parentAdUnitId)
     throws RemoteException {
@@ -93,9 +107,9 @@ public class AdUnitHbReportService {
     ReportQuery reportQuery = new ReportQuery();
     reportQuery.setDimensions(
       new Dimension[]{
-        Dimension.AD_UNIT_NAME,
         Dimension.DATE,
         Dimension.CUSTOM_DIMENSION,
+        Dimension.AD_UNIT_NAME,
       });
     reportQuery.setAdUnitView(ReportQueryAdUnitView.FLAT);
     reportQuery.setColumns(
@@ -158,8 +172,43 @@ public class AdUnitHbReportService {
     Resources.asByteSource(url).copyTo(Files.asByteSink(file));
 
     System.out.println("done.");
-//    String fileName = file.toString();
+    String fileName = file.toString();
+    try {
+      List<AdUnitHb> beans = new CsvToBeanBuilder(new FileReader(fileName))
+        .withType(AdUnitHb.class)
+        .withSkipLines(1)
+        .build()
+        .parse();
 
+      for (AdUnitHb obj : beans) {
+        System.out.println(obj.toString());
+        try {
+          AdUnitHbReport adUnitHbReport = new AdUnitHbReport();
+          adUnitHbReport.setParentId(parentId);
+          adUnitHbReport.setDate(obj.getDate());
+          adUnitHbReport.setHbImpressions(obj.getImpression());
+          adUnitHbReport.setAdvertiserName(obj.getAdvertiserName());
+          adUnitHbReport.setAdUnitId(obj.getAdUnitId());
+          adUnitHbReport.setAdUnitName(obj.getAdUnitName());
+          adUnitHbReport.setHbECPM(obj.getAverageECPM());
+          adUnitHbReport.setHbItemClicks(obj.getClick());
+          adUnitHbReport.setHbItemCtr(obj.getCtr());
+          adUnitHbReport.setHbRevenue(obj.getRevenue());
+          adUnitHbReport.setHbEligibleImpressions(obj.getEligibleImpressions());
+          adUnitHbReport.setHbMeasurableImpressions(obj.getMeasurableImpressions());
+          adUnitHbReport.setHbViewableImpressions(obj.getViewableImpressions());
+          adUnitHbReportRepository.save(adUnitHbReport);
+
+        } catch (Exception e) {
+          System.out.println("Error in data save");
+          System.out.println("e = " + e);
+          e.printStackTrace();
+        }
+      }
+
+    } catch (IOException e) {
+      System.err.printf("Request failed unexpectedly due to IOException: %s%n", e);
+    }
   }
 
   public void save(String pid, String type) {

@@ -2,7 +2,7 @@ package com.example.demo.csv;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-public class GeoHb {
+public class AdUnitAdx {
   @CsvBindByPosition(position = 0)
   private String date;
 
@@ -12,39 +12,42 @@ public class GeoHb {
   @CsvBindByPosition(position = 2)
   private String adUnitName;
 
-  @CsvBindByPosition(position = 3)
-  private String countryName;
-
-  @CsvBindByPosition(position = 5)
+  @CsvBindByPosition(position = 4)
   private String adUnitId;
 
-  @CsvBindByPosition(position = 6)
-  private String countryCriteriaID;
-
-  @CsvBindByPosition(position = 7)
+  @CsvBindByPosition(position = 5)
   private String impression;
 
-  @CsvBindByPosition(position = 8)
+  @CsvBindByPosition(position = 6)
   private String click;
 
-  @CsvBindByPosition(position = 9)
+  @CsvBindByPosition(position = 7)
   private String ctr;
 
-  @CsvBindByPosition(position = 10)
-  private String averageECPM;
-
-  @CsvBindByPosition(position = 11)
+  @CsvBindByPosition(position = 8)
   private String revenue;
 
-  @CsvBindByPosition(position = 12)
+  @CsvBindByPosition(position = 9)
+  private String averageECPM;
+
+  @CsvBindByPosition(position = 10)
   private String eligibleImpressions;
 
-  @CsvBindByPosition(position = 13)
+  @CsvBindByPosition(position = 11)
   private String measurableImpressions;
 
-  @CsvBindByPosition(position = 14)
+  @CsvBindByPosition(position = 12)
   private String viewableImpressions;
 
+  @CsvBindByPosition(position = 13)
+  private String adExchangeResponseServed;
+
+  @CsvBindByPosition(position = 14)
+  private String adSenseResponsesServed;
+
+  public String getAdUnitName() {
+    return adUnitName;
+  }
 
   public String getDate() {
     return date;
@@ -52,10 +55,6 @@ public class GeoHb {
 
   public String getAdvertiserName() {
     return advertiserName;
-  }
-
-  public String getAdUnitName() {
-    return adUnitName;
   }
 
   public String getAdUnitId() {
@@ -94,31 +93,31 @@ public class GeoHb {
     return viewableImpressions;
   }
 
-  public String getCountryName() {
-    return countryName;
+  public String getAdExchangeResponseServed() {
+    return adExchangeResponseServed;
   }
 
-  public String getCountryCriteriaID() {
-    return countryCriteriaID;
+  public String getAdSenseResponsesServed() {
+    return adSenseResponsesServed;
   }
 
   @Override
   public String toString() {
-    return "GeoHbReport{" +
-      "date='" + date + '\'' +
+    return "AdUnitAdx{" +
+      "adUnitName='" + adUnitName + '\'' +
+      ", date='" + date + '\'' +
       ", advertiserName='" + advertiserName + '\'' +
-      ", adUnitName='" + adUnitName + '\'' +
       ", adUnitId='" + adUnitId + '\'' +
       ", impression='" + impression + '\'' +
       ", click='" + click + '\'' +
       ", ctr='" + ctr + '\'' +
-      ", averageECPM='" + averageECPM + '\'' +
       ", revenue='" + revenue + '\'' +
+      ", averageECPM='" + averageECPM + '\'' +
       ", eligibleImpressions='" + eligibleImpressions + '\'' +
       ", measurableImpressions='" + measurableImpressions + '\'' +
       ", viewableImpressions='" + viewableImpressions + '\'' +
-      ", countryName='" + countryName + '\'' +
-      ", countryCriteriaID='" + countryCriteriaID + '\'' +
+      ", adExchangeResponseServed='" + adExchangeResponseServed + '\'' +
+      ", adSenseResponsesServed='" + adSenseResponsesServed + '\'' +
       '}';
   }
 }

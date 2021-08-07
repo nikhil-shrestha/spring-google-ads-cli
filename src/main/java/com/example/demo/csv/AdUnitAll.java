@@ -1,9 +1,10 @@
-package com.example.demo.csv;
 
+package com.example.demo.csv;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-public class GeoAll {
+
+public class AdUnitAll {
   @CsvBindByPosition(position = 0)
   private String date;
 
@@ -13,36 +14,33 @@ public class GeoAll {
   @CsvBindByPosition(position = 2)
   private String adUnitName;
 
-  @CsvBindByPosition(position = 3)
-  private String countryName;
-
-  @CsvBindByPosition(position = 5)
+  @CsvBindByPosition(position = 4)
   private String adUnitId;
 
-  @CsvBindByPosition(position = 6)
-  private String countryCriteriaID;
-
-  @CsvBindByPosition(position = 7)
+  @CsvBindByPosition(position = 5)
   private String unfilledImpression;
 
-  @CsvBindByPosition(position = 8)
+  @CsvBindByPosition(position = 6)
   private String impression;
 
-  @CsvBindByPosition(position = 9)
+  @CsvBindByPosition(position = 7)
   private String lineItemClicks;
 
-  @CsvBindByPosition(position = 10)
+  @CsvBindByPosition(position = 8)
   private String cpmRevenue;
 
-  @CsvBindByPosition(position = 11)
+  @CsvBindByPosition(position = 9)
   private String adRequest;
 
-  @CsvBindByPosition(position = 12)
+  @CsvBindByPosition(position = 10)
   private String responseServed;
 
-  @CsvBindByPosition(position = 13)
+  @CsvBindByPosition(position = 11)
   private String fillRate;
 
+  public String getAdUnitName() {
+    return adUnitName;
+  }
 
   public String getDate() {
     return date;
@@ -50,10 +48,6 @@ public class GeoAll {
 
   public String getAdvertiserName() {
     return advertiserName;
-  }
-
-  public String getAdUnitName() {
-    return adUnitName;
   }
 
   public String getAdUnitId() {
@@ -88,24 +82,13 @@ public class GeoAll {
     return fillRate;
   }
 
-  public String getCountryCriteriaID() {
-    return countryCriteriaID;
-  }
-
-  public String getCountryName() {
-    return countryName;
-  }
-
-
   @Override
   public String toString() {
-    return "GeoAll{" +
-      "date='" + date + '\'' +
+    return "AdUnitAll{" +
+      "adUnitName='" + adUnitName + '\'' +
+      ", date='" + date + '\'' +
       ", advertiserName='" + advertiserName + '\'' +
-      ", adUnitName='" + adUnitName + '\'' +
-      ", countryName='" + countryName + '\'' +
       ", adUnitId='" + adUnitId + '\'' +
-      ", countryCriteriaID='" + countryCriteriaID + '\'' +
       ", unfilledImpression='" + unfilledImpression + '\'' +
       ", impression='" + impression + '\'' +
       ", lineItemClicks='" + lineItemClicks + '\'' +

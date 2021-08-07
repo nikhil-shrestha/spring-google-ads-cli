@@ -2,7 +2,7 @@ package com.example.demo.csv;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-public class GeoHb {
+public class AdUnitHb {
   @CsvBindByPosition(position = 0)
   private String date;
 
@@ -12,39 +12,32 @@ public class GeoHb {
   @CsvBindByPosition(position = 2)
   private String adUnitName;
 
-  @CsvBindByPosition(position = 3)
-  private String countryName;
-
-  @CsvBindByPosition(position = 5)
+  @CsvBindByPosition(position = 4)
   private String adUnitId;
 
-  @CsvBindByPosition(position = 6)
-  private String countryCriteriaID;
-
-  @CsvBindByPosition(position = 7)
+  @CsvBindByPosition(position = 5)
   private String impression;
 
-  @CsvBindByPosition(position = 8)
+  @CsvBindByPosition(position = 6)
   private String click;
 
-  @CsvBindByPosition(position = 9)
+  @CsvBindByPosition(position = 7)
   private String ctr;
 
-  @CsvBindByPosition(position = 10)
+  @CsvBindByPosition(position = 8)
   private String averageECPM;
 
-  @CsvBindByPosition(position = 11)
+  @CsvBindByPosition(position = 9)
   private String revenue;
 
-  @CsvBindByPosition(position = 12)
+  @CsvBindByPosition(position = 10)
   private String eligibleImpressions;
 
-  @CsvBindByPosition(position = 13)
+  @CsvBindByPosition(position = 11)
   private String measurableImpressions;
 
-  @CsvBindByPosition(position = 14)
+  @CsvBindByPosition(position = 12)
   private String viewableImpressions;
-
 
   public String getDate() {
     return date;
@@ -74,12 +67,12 @@ public class GeoHb {
     return ctr;
   }
 
-  public String getRevenue() {
-    return revenue;
-  }
-
   public String getAverageECPM() {
     return averageECPM;
+  }
+
+  public String getRevenue() {
+    return revenue;
   }
 
   public String getEligibleImpressions() {
@@ -94,17 +87,9 @@ public class GeoHb {
     return viewableImpressions;
   }
 
-  public String getCountryName() {
-    return countryName;
-  }
-
-  public String getCountryCriteriaID() {
-    return countryCriteriaID;
-  }
-
   @Override
   public String toString() {
-    return "GeoHbReport{" +
+    return "AdUnitHb{" +
       "date='" + date + '\'' +
       ", advertiserName='" + advertiserName + '\'' +
       ", adUnitName='" + adUnitName + '\'' +
@@ -117,8 +102,6 @@ public class GeoHb {
       ", eligibleImpressions='" + eligibleImpressions + '\'' +
       ", measurableImpressions='" + measurableImpressions + '\'' +
       ", viewableImpressions='" + viewableImpressions + '\'' +
-      ", countryName='" + countryName + '\'' +
-      ", countryCriteriaID='" + countryCriteriaID + '\'' +
       '}';
   }
 }

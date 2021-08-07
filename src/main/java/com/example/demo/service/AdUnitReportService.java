@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.csv.AdUnitAll;
+import com.example.demo.dao.entity.AdUnitAllReport;
+import com.example.demo.dao.repository.AdUnitAllReportRepository;
 import com.example.demo.utils.CustomDate;
 import com.google.api.ads.admanager.axis.factory.AdManagerServices;
 import com.google.api.ads.admanager.axis.utils.v202105.DateTimes;
@@ -14,11 +17,14 @@ import com.google.api.ads.common.lib.exception.ValidationException;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import com.opencsv.bean.CsvToBeanBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -33,6 +39,12 @@ import static com.google.api.ads.common.lib.utils.Builder.DEFAULT_CONFIGURATION_
 public class AdUnitReportService {
   private static final Logger logger = LoggerFactory.getLogger(AdUnitReportService.class);
 
+  @Autowired
+  private AdUnitAllReportRepository adUnitAllReportRepository;
+
+  public long getCount() {
+    return adUnitAllReportRepository.count();
+  }
 
   public static ArrayList<String> getAdUnitIds(AdManagerServices adManagerServices, AdManagerSession session, long parentAdUnitId)
     throws RemoteException {
@@ -96,9 +108,9 @@ public class AdUnitReportService {
     ReportQuery reportQuery = new ReportQuery();
     reportQuery.setDimensions(
       new Dimension[]{
-        Dimension.AD_UNIT_NAME,
         Dimension.DATE,
         Dimension.CUSTOM_DIMENSION,
+        Dimension.AD_UNIT_NAME,
       });
     reportQuery.setAdUnitView(ReportQueryAdUnitView.FLAT);
     reportQuery.setColumns(
@@ -161,9 +173,44 @@ public class AdUnitReportService {
     Resources.asByteSource(url).copyTo(Files.asByteSink(file));
 
     System.out.println("done.");
-//    String fileName = file.toString();
+    String fileName = file.toString();
+    try {
+      List<AdUnitAll> beans = new CsvToBeanBuilder(new FileReader(fileName))
+        .withType(AdUnitAll.class)
+        .withSkipLines(1)
+        .build()
+        .parse();
 
+      for (AdUnitAll obj : beans) {
+        System.out.println(obj.toString());
+        try {
+          AdUnitAllReport adUnitAllReport = new AdUnitAllReport();
+          adUnitAllReport.setParentId(parentId);
+          adUnitAllReport.setAdUnitName(obj.getAdUnitName());
+          adUnitAllReport.setDate(obj.getDate());
+          adUnitAllReport.setAdvertiserName(obj.getAdvertiserName());
+          adUnitAllReport.setAdUnitId(obj.getAdUnitId());
+          adUnitAllReport.setTotalUnfilledImpressions(obj.getUnfilledImpression());
+          adUnitAllReport.setTotalImpressions(obj.getImpression());
+          adUnitAllReport.setTotalRevenue(obj.getCpmRevenue());
+          adUnitAllReport.setTotalAdRequest(obj.getAdRequest());
+          adUnitAllReport.setTotalResponseServed(obj.getResponseServed());
+          adUnitAllReport.setTotalItemClicks(obj.getLineItemClicks());
+          adUnitAllReport.setTotalFillRate(obj.getFillRate());
+          adUnitAllReportRepository.save(adUnitAllReport);
+
+        } catch (Exception e) {
+          System.out.println("Error in data save");
+          System.out.println("e = " + e);
+          e.printStackTrace();
+        }
+      }
+
+    } catch (IOException e) {
+      System.err.printf("Request failed unexpectedly due to IOException: %s%n", e);
+    }
   }
+
 
   public void save(String pid, String type) {
     long start = System.currentTimeMillis();
